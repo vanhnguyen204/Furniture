@@ -8,4 +8,5 @@ export const PageName = {
   NotificationScreen: 'NotificationScreen',
   ProfileScreen: 'ProfileScreen',
   MarkScreen: 'MarkScreen',
+  BottomTab: 'BottomTab',
 };

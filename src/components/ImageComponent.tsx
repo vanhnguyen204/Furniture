@@ -22,6 +22,7 @@ interface ImageProps {
   marginBottom?: number;
   flex?: number;
   style?: ViewStyle | ViewStyle[];
+  borderRadius?: number;
 }
 const ImageComponent = (props: ImageProps) => {
   const {
@@ -39,6 +40,7 @@ const ImageComponent = (props: ImageProps) => {
     marginTop = 0,
     marginVertical = 0,
     flex,
+    borderRadius
   } = props;
   return (
     <Image
@@ -58,6 +60,7 @@ const ImageComponent = (props: ImageProps) => {
           marginTop: marginTop,
           marginVertical: marginVertical,
           flex: flex ?? 0,
+          borderRadius: borderRadius ?? 0
         },
       ]}
     />

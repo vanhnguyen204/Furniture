@@ -5,6 +5,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import {screenOptions} from '../utils/navigationUtils.ts';
 import {LoginScreen} from '../screens/Auth/LoginScreen.tsx';
 import SignUpScreen from '../screens/Auth/SignUpScreen.tsx';
+import BottomTabNavigation from './BottomTabNavigation.tsx';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -13,6 +14,7 @@ const Navigation = () => {
       <Stack.Screen name={PageName.WelcomeScreen} component={WelcomeScreen} />
       <Stack.Screen name={PageName.Login} component={LoginScreen} />
       <Stack.Screen name={PageName.Register} component={SignUpScreen} />
+      <Stack.Screen name={PageName.BottomTab} component={BottomTabNavigation} />
     </Stack.Navigator>
   );
 };

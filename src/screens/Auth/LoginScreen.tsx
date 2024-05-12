@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Container from '../../components/Container.tsx';
 import Box from '../../components/Box.tsx';
 import {Image, View} from 'react-native';
@@ -11,6 +11,9 @@ import {navigatePush} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
 
 export const LoginScreen = () => {
+  const handleLogin = useCallback(() => {
+    navigatePush(PageName.BottomTab);
+  }, []);
   return (
     <Container>
       <Box padding={20} flex={1}>
@@ -125,7 +128,7 @@ export const LoginScreen = () => {
           />
           <ButtonComponent
             name={'Login'}
-            onPress={() => {}}
+            onPress={handleLogin}
             nameColor={appColors.white}
             alignSelf={'stretch'}
             alignItems={'center'}
