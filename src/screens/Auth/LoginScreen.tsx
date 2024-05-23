@@ -1,19 +1,111 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Box from '../../components/Box.tsx';
-import {Image, View} from 'react-native';
+import {Alert, Image, View} from 'react-native';
 import ImageComponent from '../../components/ImageComponent.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
 import TextComponent from '../../components/TextComponent.tsx';
 import InputComponent from '../../components/InputComponent.tsx';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
-import {navigatePush} from '../../utils/navigationUtils.ts';
+import {navigatePush, navigateReplace} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
+import {useAuth} from '../../hooks/useAuth.ts';
+import {validateEmail, validatePass} from '../../utils/validate.ts';
+import {login} from '../../services/api/auth.ts';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ACCESS_TOKEN, ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
+import {
+  fetchAllData,
+  fetchFavoriteProductsByUser,
+} from '../../services/api/product.ts';
+import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
+import {useUserInformation} from '../../hooks/useUserInformation.ts';
 
 export const LoginScreen = () => {
-  const handleLogin = useCallback(() => {
-    navigatePush(PageName.BottomTab);
-  }, []);
+  const navigation = useNavigation();
+  const {setProducts} = useStoreGlobal();
+  const {setMyFavorites} = useUserInformation();
+  const [isSecurePass, setIsSecurePass] = useState(true);
+  const {
+    email,
+    passWord,
+    setEmail,
+    setPassword,
+    setErrorEmail,
+    setErrorPassword,
+    errorEmail,
+    errorPassword,
+  } = useAuth();
+  const onEmailChange = (value: string) => {
+    setEmail(value);
+    setErrorEmail(validateEmail(value));
+  };
+  const onPassChange = (value: string) => {
+    setPassword(value);
+    setErrorPassword(validatePass(value));
+  };
+  const handleLogin = useCallback(async () => {
+    if (email.trim().length !== 0 || passWord.trim().length !== 0) {
+      login(email, passWord)
+        .then(async res => {
+          // @ts-ignore
+          if (res?.error) {
+            // @ts-ignore
+            Alert.alert('Thông báo', res.error);
+            return;
+          }
+          try {
+            // @ts-ignore
+            const {token, ...rest} = res;
+            await AsyncStorage.setItem(ACCESS_TOKEN, token);
+            // @ts-ignore
+            await AsyncStorage.setItem(ACCESS_USER_ID, rest.user._id);
+            const fetchDataRes = await fetchAllData();
+            // @ts-ignore
+            setProducts(fetchDataRes);
+            const fetchFavorite = await fetchFavoriteProductsByUser(
+              // @ts-ignore
+              rest.user._id,
+            );
+            setMyFavorites(fetchFavorite);
+            navigateReplace(PageName.BottomTab);
+            setErrorEmail('');
+            setErrorPassword('');
+            setEmail('');
+            setPassword('');
+          } catch (e) {
+            console.log(e);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          Alert.alert(
+            'Mất kết nối',
+            'Vui lòng kiểm tra đường truyền và thử lại.',
+          );
+        });
+    } else {
+      setErrorEmail(validateEmail(email));
+      setErrorPassword(validatePass(passWord));
+    }
+  }, [
+    email,
+    passWord,
+    setErrorEmail,
+    setErrorPassword,
+    setMyFavorites,
+    setProducts,
+  ]);
+  useEffect(() => {
+    const sub = navigation.addListener('focus', () => {
+      setErrorEmail('');
+      setErrorPassword('');
+    });
+    return () => {
+      sub();
+    };
+  }, [navigation, setErrorEmail, setErrorPassword]);
   return (
     <Container>
       <Box padding={20} flex={1}>
@@ -83,16 +175,24 @@ export const LoginScreen = () => {
             marginBottom={20}
           />
           <InputComponent
+            autoCapitalize={'none'}
             marginBottom={10}
-            value={'email'}
+            value={email}
             textColor={appColors.black900}
-            onChangeText={() => {}}
+            onChangeText={onEmailChange}
           />
           <Box
             height={1}
             alignSelf={'stretch'}
             backgroundColor={appColors.grays.gray500}
           />
+          {errorEmail && (
+            <TextComponent
+              color={appColors.red}
+              marginTop={5}
+              value={errorEmail}
+            />
+          )}
           <TextComponent
             value={'Password'}
             fontWeight={'400'}
@@ -102,12 +202,17 @@ export const LoginScreen = () => {
           />
           <Box flexDirection={'row'}>
             <InputComponent
+              isSecure={isSecurePass}
               style={{flex: 1}}
-              value={'pass'}
+              value={passWord}
               textColor={appColors.black900}
-              onChangeText={() => {}}
+              onChangeText={onPassChange}
             />
-            <ButtonComponent name={'toggle pass'} onPress={() => {}}>
+            <ButtonComponent
+              name={'toggle pass'}
+              onPress={() => {
+                setIsSecurePass(prevState => !prevState);
+              }}>
               <ImageComponent
                 src={require('../../assets/icons/view.png')}
                 height={20}
@@ -120,6 +225,13 @@ export const LoginScreen = () => {
             alignSelf={'stretch'}
             backgroundColor={appColors.grays.gray500}
           />
+          {errorPassword && (
+            <TextComponent
+              value={errorPassword}
+              color={appColors.red}
+              marginTop={5}
+            />
+          )}
           <ButtonComponent
             name={'Forgot password ?'}
             onPress={() => {}}

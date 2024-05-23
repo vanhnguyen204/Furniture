@@ -34,7 +34,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Vstagram muốn truy cập vào camera để sử dụng chức năng này</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Vstagram muốn truy cập đầy đủ ảnh, video để sử dụng tính năng này</string>
 	<key>UIAppFonts</key>

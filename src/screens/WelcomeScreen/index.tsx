@@ -1,13 +1,46 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import Container from '../../components/Container.tsx';
-import {ImageBackground} from 'react-native';
+import {ActivityIndicator, Alert, ImageBackground} from 'react-native';
 import TextComponent from '../../components/TextComponent.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
-import { navigate, navigatePush, navigateReplace } from "../../utils/navigationUtils.ts";
+import {navigateReplace} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
+import {
+  fetchAllData,
+  fetchFavoriteProductsByUser,
+} from '../../services/api/product.ts';
+import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ACCESS_TOKEN, ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
+import {useUserInformation} from '../../hooks/useUserInformation.ts';
 
 const WelcomeScreen = () => {
+  const {setProducts} = useStoreGlobal();
+  const {setMyFavorites} = useUserInformation();
+  const [isLoading, setIsLoading] = useState(false);
+  const handleGetstarted = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const checkToken = await AsyncStorage.getItem(ACCESS_TOKEN);
+      if (checkToken === null) {
+        navigateReplace(PageName.Login);
+      } else {
+        const fetchFavorite = await fetchFavoriteProductsByUser();
+        setMyFavorites(fetchFavorite);
+        navigateReplace(PageName.BottomTab);
+      }
+
+      const fetchDataRes = await fetchAllData();
+      // @ts-ignore
+      setProducts(fetchDataRes);
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [setProducts]);
   return (
     <ImageBackground
       source={require('../../assets/images/backgroundWelcome.png')}
@@ -47,7 +80,7 @@ const WelcomeScreen = () => {
         <ButtonComponent
           name={'Get started'}
           onPress={() => {
-            navigateReplace(PageName.Login);
+            handleGetstarted();
           }}
           padding={10}
           borderRadius={10}
@@ -56,8 +89,13 @@ const WelcomeScreen = () => {
           marginTop={150}
           fontWeight={'600'}
           paddingHorizontal={20}
-          backgroundColor={appColors.black900}
-        />
+          backgroundColor={appColors.black900}>
+          {isLoading ? (
+            <ActivityIndicator color={appColors.white} size={'small'} />
+          ) : (
+            <TextComponent value={'Get started'} />
+          )}
+        </ButtonComponent>
       </Container>
     </ImageBackground>
   );

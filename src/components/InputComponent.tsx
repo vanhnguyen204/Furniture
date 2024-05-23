@@ -13,6 +13,7 @@ interface InputProps extends TextInputProps {
   value: string;
   onChangeText: (value: string) => void;
   flex?: number;
+  isSecure?: boolean;
   placeholder?: string;
   placeholderTextColor?: string;
   borderRadius?: number;
@@ -27,7 +28,7 @@ interface InputProps extends TextInputProps {
   textColor?: string;
   style?: ViewStyle;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
-  ref?: Ref<TextInput>;
+  inputRef?: Ref<TextInput>;
 }
 const InputComponent = (props: InputProps) => {
   const {
@@ -39,12 +40,14 @@ const InputComponent = (props: InputProps) => {
     style,
     flex,
     autoCapitalize,
-    ref,
+    inputRef,
+    isSecure,
     ...resProps
   } = props;
   return (
     <TextInput
-      ref={ref}
+      secureTextEntry={isSecure}
+      ref={inputRef}
       {...resProps}
       style={[{color: textColor ?? appColors.white, flex: flex}, style]}
       value={value}

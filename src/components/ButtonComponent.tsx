@@ -28,6 +28,7 @@ interface ButtonProps extends FlexStyle {
     | undefined;
   paddingHorizontal?: number;
   marginTop?: number;
+  marginBottom?: number;
 }
 const ButtonComponent = (props: ButtonProps) => {
   const {
@@ -52,6 +53,9 @@ const ButtonComponent = (props: ButtonProps) => {
     fontWeight,
     paddingHorizontal,
     marginTop,
+    flex,
+    marginLeft,
+    marginBottom,
   } = props;
   return (
     <TouchableOpacity
@@ -73,6 +77,9 @@ const ButtonComponent = (props: ButtonProps) => {
           overflow: overflow,
           paddingHorizontal: paddingHorizontal,
           marginTop: marginTop,
+          flex: flex ?? undefined,
+          marginLeft: marginLeft ?? undefined,
+          marginBottom: marginBottom ?? undefined,
         },
       ]}>
       {children ? (

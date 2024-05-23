@@ -1,46 +1,42 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import Container from '../../components/Container.tsx';
-import TextComponent from '../../components/TextComponent.tsx';
 import Header from './components/Header.tsx';
 import Categories from './components/Categories.tsx';
 import ListProduct from './components/ListProduct.tsx';
+import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
+import {fetchAllData} from '../../services/api/product.ts';
 
 const HomeScreen = () => {
-  const data = [
-    {
-      id: 1,
-      image: require('../../assets/images/chair-product.png'),
-      name: 'Coffee Chair',
-      type: 'chair',
-      price: 20,
-    },
-    {
-      id: 2,
-      image: require('../../assets/images/lamp-product.png'),
-      name: 'Black Simple Lamp',
-      type: 'lamp',
-      price: 25,
-    },
-    {
-      id: 3,
-      image: require('../../assets/images/table.png'),
-      name: 'Minimal Stand',
-      type: 'table',
-      price: 15,
-    },
-    {
-      id: 4,
-      image: require('../../assets/images/table-desk.png'),
-      name: 'Table Desk',
-      type: 'table',
-      price: 30,
-    },
-  ];
+  const {products, setProducts} = useStoreGlobal();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true); // Start refreshing indicator
+    fetchAllData()
+      .then(res => {
+        // @ts-ignore
+        setProducts(res);
+        console.log('onRefresh');
+      })
+      .catch(e => {
+        console.log(e);
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
+    console.log('onRefresh');
+  }, [setProducts]);
+
   return (
     <Container>
       <Header onSearch={() => {}} onCart={() => {}} />
       <Categories />
-      <ListProduct column={2} data={data} />
+      <ListProduct
+        onRefresh={onRefresh}
+        refresh={refreshing}
+        column={2}
+        data={products}
+      />
     </Container>
   );
 };

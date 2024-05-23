@@ -23,6 +23,7 @@ interface NavigationParams {
 
 export const navigate = (name: any, params?: NavigationParams) => {
   if (navigationRef.isReady()) {
+    // @ts-ignore
     navigationRef.navigate(name, params);
   }
 };

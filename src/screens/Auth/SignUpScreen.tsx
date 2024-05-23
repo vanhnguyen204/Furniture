@@ -6,8 +6,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
+  Alert,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Container from '../../components/Container';
 import ButtonComponent from '../../components/ButtonComponent';
 import Box from '../../components/Box';
@@ -24,8 +25,11 @@ import {
   validateFullName,
   validatePass,
 } from '../../utils/validate';
+import {signup} from '../../services/api/auth.ts';
+import {useNavigation} from '@react-navigation/native';
 
 const SignUpScreen = () => {
+  const navigation = useNavigation();
   const {
     email,
     passWord,
@@ -44,7 +48,8 @@ const SignUpScreen = () => {
     setErrorPassword,
     setErrorConfirmPassword,
   } = useAuth();
-
+  const [isSecurePass, setIsSecurePass] = useState(true);
+  const [isSecurePassConfirm, setIsSecurePassConfirm] = useState(true);
   const onNameChange = useCallback(
     (value: string) => {
       setName(value);
@@ -73,7 +78,57 @@ const SignUpScreen = () => {
     },
     [passWord, setConfirmPassword, setErrorConfirmPassword],
   );
-
+  const handleSignUp = () => {
+    if (!email || !passWord || !name || !confirmPassword) {
+      setErrorName(validateFullName(name));
+      setErrorEmail(validateEmail(email));
+      setErrorPassword(validatePass(passWord));
+      setErrorConfirmPassword(validateConfirmPass(passWord, confirmPassword));
+    } else {
+      signup(email, passWord, name)
+        .then(res => {
+          console.log(res);
+          // @ts-ignore
+          if (res.error) {
+            Alert.alert(
+              'Thông báo',
+              'Email này đã được đăng ký cho 1 tài khoản khác.',
+            );
+            return;
+          }
+          Alert.alert(
+            'Chúc mừng',
+            'Tạo tài khoản thành công, quay lại màn hình đăng nhập.',
+            [
+              {
+                text: 'Quay lại',
+                onPress: () => goBackNavigation(),
+              },
+            ],
+          );
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  };
+  useEffect(() => {
+    const sub = navigation.addListener('focus', () => {
+      setErrorName('');
+      setErrorEmail('');
+      setErrorPassword('');
+      setErrorConfirmPassword('');
+    });
+    return () => {
+      sub();
+    };
+  }, [
+    navigation,
+    setErrorConfirmPassword,
+    setErrorEmail,
+    setErrorName,
+    setErrorPassword,
+  ]);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -180,14 +235,23 @@ const SignUpScreen = () => {
               />
               <Box flexDirection={'row'}>
                 <InputComponent
+                  secureTextEntry={isSecurePass}
                   style={{flex: 1}}
                   value={passWord}
                   textColor={appColors.black900}
                   onChangeText={onPassChange}
                 />
-                <ButtonComponent name={'toggle pass'} onPress={() => {}}>
+                <ButtonComponent
+                  name={'toggle pass'}
+                  onPress={() => {
+                    setIsSecurePass(prevState => !prevState);
+                  }}>
                   <ImageComponent
-                    src={require('../../assets/icons/view.png')}
+                    src={
+                      isSecurePass
+                        ? require('../../assets/icons/hidden.png')
+                        : require('../../assets/icons/view.png')
+                    }
                     height={20}
                     width={20}
                   />
@@ -210,14 +274,23 @@ const SignUpScreen = () => {
               />
               <Box flexDirection={'row'}>
                 <InputComponent
+                  secureTextEntry={isSecurePassConfirm}
                   style={{flex: 1}}
                   value={confirmPassword}
                   textColor={appColors.black900}
                   onChangeText={onConfirmPassChange}
                 />
-                <ButtonComponent name={'toggle pass'} onPress={() => {}}>
+                <ButtonComponent
+                  name={'toggle pass'}
+                  onPress={() => {
+                    setIsSecurePassConfirm(prevState => !prevState);
+                  }}>
                   <ImageComponent
-                    src={require('../../assets/icons/view.png')}
+                    src={
+                      isSecurePassConfirm
+                        ? require('../../assets/icons/hidden.png')
+                        : require('../../assets/icons/view.png')
+                    }
                     height={20}
                     width={20}
                   />
@@ -237,7 +310,9 @@ const SignUpScreen = () => {
               <ButtonComponent
                 marginTop={20}
                 name={'Sign up'}
-                onPress={() => {}}
+                onPress={() => {
+                  handleSignUp();
+                }}
                 nameColor={appColors.white}
                 alignSelf={'stretch'}
                 alignItems={'center'}
@@ -252,6 +327,14 @@ const SignUpScreen = () => {
                 fontSize={16}
                 padding={10}
                 onPress={() => {
+                  setName('');
+                  setEmail('');
+                  setPassword('');
+                  setConfirmPassword('');
+                  setErrorEmail('');
+                  setErrorName('');
+                  setErrorPassword('');
+                  setErrorConfirmPassword('');
                   goBackNavigation();
                 }}
                 nameColor={appColors.black900}

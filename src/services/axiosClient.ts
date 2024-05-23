@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ProdConfig} from '../config/AxiosConfig.ts';
+import {ProdConfig} from '../config/axiosConfig.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_TOKEN} from '../constants/AsyncStorage.ts';
 
@@ -32,10 +32,14 @@ axiosClient.interceptors.response.use(
 );
 export const request = async (url: string, method: string, data?: any) => {
   try {
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     return await axiosClient.request({
       url,
       method,
       data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   } catch (error: any) {
     handleLogError(error, url, method);

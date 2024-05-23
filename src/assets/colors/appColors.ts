@@ -12,7 +12,7 @@ export const appColors = {
     gray200: '#EEEEEE',
     gray300: '#E0E0E0',
     gray400: '#BDBDBD',
-    gray450: '#606060',
+    gray450: '#808080',
     gray500: '#9E9E9E',
     gray600: '#757575',
     gray700: '#616161',

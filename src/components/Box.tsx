@@ -59,7 +59,7 @@ const Box = (props: BoxProps) => {
           alignItems: alignItems ?? undefined,
           backgroundColor: backgroundColor ?? undefined,
           opacity: opacity ?? 1,
-          margin: margin ?? null,
+          margin: margin ?? 0,
           marginBottom: marginBottom ?? null,
           marginTop: marginTop ?? null,
           marginLeft: marginLeft ?? null,

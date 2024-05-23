@@ -9,4 +9,6 @@ export const PageName = {
   ProfileScreen: 'ProfileScreen',
   MarkScreen: 'MarkScreen',
   BottomTab: 'BottomTab',
+  ProductDetailsScreen: 'ProductDetailsScreen',
+  Cart: 'Cart',
 };

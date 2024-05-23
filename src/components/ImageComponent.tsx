@@ -4,13 +4,14 @@ import {
   ImageResizeMode,
   FlexAlignType,
   ViewStyle,
-} from 'react-native';
+  FlexStyle, ImageStyle
+} from "react-native";
 import React, {memo} from 'react';
 interface ImageProps {
   src: ImageSourcePropType;
   width?: number;
   height?: number | undefined;
-  tintColor?: string;
+  tintColor?: string | undefined;
   resizeMode?: ImageResizeMode;
   alignSelf?: FlexAlignType;
   margin?: number;
@@ -21,7 +22,7 @@ interface ImageProps {
   marginTop?: number;
   marginBottom?: number;
   flex?: number;
-  style?: ViewStyle | ViewStyle[];
+  style?: ImageStyle;
   borderRadius?: number;
 }
 const ImageComponent = (props: ImageProps) => {
@@ -40,12 +41,14 @@ const ImageComponent = (props: ImageProps) => {
     marginTop = 0,
     marginVertical = 0,
     flex,
-    borderRadius
+    borderRadius,
+    style,
   } = props;
   return (
     <Image
       source={src}
       style={[
+        style,
         {
           height: height ?? undefined,
           width: width ?? undefined,
@@ -60,7 +63,7 @@ const ImageComponent = (props: ImageProps) => {
           marginTop: marginTop,
           marginVertical: marginVertical,
           flex: flex ?? 0,
-          borderRadius: borderRadius ?? 0
+          borderRadius: borderRadius ?? 0,
         },
       ]}
     />
