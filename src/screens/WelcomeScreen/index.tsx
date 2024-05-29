@@ -14,21 +14,25 @@ import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_TOKEN, ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
+import {getMyShippingAddress} from '../../services/api/shippingAddress.ts';
 
 const WelcomeScreen = () => {
   const {setProducts} = useStoreGlobal();
-  const {setMyFavorites} = useUserInformation();
+  const {setMyFavorites, setMyAddress} = useUserInformation();
   const [isLoading, setIsLoading] = useState(false);
   const handleGetstarted = useCallback(async () => {
     setIsLoading(true);
     try {
       const checkToken = await AsyncStorage.getItem(ACCESS_TOKEN);
       if (checkToken === null) {
-        navigateReplace(PageName.Login);
+        navigateReplace('Login');
       } else {
         const fetchFavorite = await fetchFavoriteProductsByUser();
+        const fetchShippingAddress = await getMyShippingAddress();
+        // @ts-ignore
+        setMyAddress(fetchShippingAddress);
         setMyFavorites(fetchFavorite);
-        navigateReplace(PageName.BottomTab);
+        navigateReplace('BottomTab');
       }
 
       const fetchDataRes = await fetchAllData();
@@ -40,7 +44,7 @@ const WelcomeScreen = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [setProducts]);
+  }, [setMyAddress, setMyFavorites, setProducts]);
   return (
     <ImageBackground
       source={require('../../assets/images/backgroundWelcome.png')}

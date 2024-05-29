@@ -5,6 +5,7 @@ export const appColors = {
   backgroundApp: '#000',
   gray: 'rgba(255,255,255,0.5)',
   red: '#D32F2F',
+  brown: '#b08e6a',
   blue500: '#2196F3',
   transparent: 'transparent',
   grays: {

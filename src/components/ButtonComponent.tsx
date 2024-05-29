@@ -1,4 +1,4 @@
-import {FlexStyle, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import {FlexStyle, TouchableOpacity, ViewStyle} from 'react-native';
 import React, {memo, ReactNode} from 'react';
 import TextComponent from './TextComponent';
 import {appColors} from '../assets/colors/appColors';
@@ -6,6 +6,7 @@ import {appColors} from '../assets/colors/appColors';
 interface ButtonProps extends FlexStyle {
   name?: string;
   onPress: () => void;
+  opacity?: number;
   style?: ViewStyle;
   backgroundColor?: string;
   nameColor?: string;
@@ -54,8 +55,14 @@ const ButtonComponent = (props: ButtonProps) => {
     paddingHorizontal,
     marginTop,
     flex,
+    position,
     marginLeft,
     marginBottom,
+    top,
+    end,
+    bottom,
+    opacity,
+    left,
   } = props;
   return (
     <TouchableOpacity
@@ -80,6 +87,12 @@ const ButtonComponent = (props: ButtonProps) => {
           flex: flex ?? undefined,
           marginLeft: marginLeft ?? undefined,
           marginBottom: marginBottom ?? undefined,
+          position,
+          top,
+          end,
+          bottom,
+          left,
+          opacity: opacity ?? 1,
         },
       ]}>
       {children ? (

@@ -69,7 +69,7 @@ export const LoginScreen = () => {
               rest.user._id,
             );
             setMyFavorites(fetchFavorite);
-            navigateReplace(PageName.BottomTab);
+            navigateReplace('BottomTab');
             setErrorEmail('');
             setErrorPassword('');
             setEmail('');
@@ -92,9 +92,11 @@ export const LoginScreen = () => {
   }, [
     email,
     passWord,
+    setEmail,
     setErrorEmail,
     setErrorPassword,
     setMyFavorites,
+    setPassword,
     setProducts,
   ]);
   useEffect(() => {
@@ -256,7 +258,7 @@ export const LoginScreen = () => {
             padding={10}
             fontWeight={'600'}
             onPress={() => {
-              navigatePush(PageName.Register);
+              navigatePush('Register');
             }}
             nameColor={appColors.black900}
             alignSelf={'center'}

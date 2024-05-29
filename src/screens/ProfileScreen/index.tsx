@@ -3,8 +3,7 @@ import Container from '../../components/Container.tsx';
 import TextComponent from '../../components/TextComponent.tsx';
 import Header from '../../components/Header.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
-import {navigateAndReset} from '../../utils/navigationUtils.ts';
-import {PageName} from '../../config/pageName.ts';
+import {navigateAndReset, navigatePush} from '../../utils/navigationUtils.ts';
 import Box from '../../components/Box.tsx';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import ImageComponent from '../../components/ImageComponent.tsx';
@@ -31,7 +30,9 @@ const ProfileScreen = () => {
       id: 2,
       name: 'Shipping Addresses',
       value: `${myAddresses.length} addresses`,
-      onPress: () => {},
+      onPress: () => {
+        navigatePush('ShippingAddress');
+      },
     },
     {
       id: 3,
@@ -39,7 +40,9 @@ const ProfileScreen = () => {
       value: `You have ${
         myPayments.length < 10 ? '0' + myPayments.length : myPayments.length
       } cards`,
-      onPress: () => {},
+      onPress: () => {
+        navigatePush('Payment');
+      },
     },
     {
       id: 4,
@@ -73,7 +76,7 @@ const ProfileScreen = () => {
               onPress: () => {
                 AsyncStorage.setItem(ACCESS_TOKEN, '')
                   .then(() => {
-                    navigateAndReset([PageName.Login], 0);
+                    navigateAndReset([{name: 'Login'}], 0);
                   })
                   .catch(e => {
                     console.log(e);

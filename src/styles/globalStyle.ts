@@ -18,4 +18,9 @@ export const globalStyle = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  text18Nunitosan: {
+    fontSize: 18,
+    color: appColors.black900,
+    fontWeight: '600',
+  },
 });

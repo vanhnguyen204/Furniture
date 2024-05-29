@@ -20,5 +20,19 @@ export default () => {
     checkProductIsInCart: `${baseURL}/api/cart/checking-product`,
     fetchDataFromCart: `${baseURL}/api/cart/my-cart`,
     addProductToCart: `${baseURL}/api/cart/add`,
+    removeFromCart: `${baseURL}/api/cart/remove`,
+    //shipping address
+    createShippingAddress: `${baseURL}/api/shipping-address/`,
+    updateShippingAddress: `${baseURL}/api/shipping-address/`,
+    deleteShippingAddress: `${baseURL}/api/shipping-address/`,
+    getShippingAddress: `${baseURL}/api/shipping-address/`,
+    activeShippingAddress: `${baseURL}/api/shipping-address/active`,
+    getMyShippingAddressIsSelected: `${baseURL}/api/shipping-address/address-selected`,
+
+    //payment method
+    getMyPayment: `${baseURL}/api/payment/my-payment`,
+    createPayment: `${baseURL}/api/payment/`,
+    removePayment: `${baseURL}/api/payment/`,
+    activePayment: `${baseURL}/api/payment/`,
   };
 };

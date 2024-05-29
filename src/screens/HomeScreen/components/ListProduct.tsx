@@ -56,7 +56,7 @@ export const ProductItem = memo(({item}: {item: any}) => (
         backgroundColor={appColors.grays.gray400}
         name={'Shopping bag'}
         onPress={() => {
-          navigatePush(PageName.ProductDetailsScreen, {item});
+          navigatePush('ProductDetailsScreen', {item: item});
         }}>
         <ImageComponent
           tintColor={appColors.white}

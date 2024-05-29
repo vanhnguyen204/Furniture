@@ -4,8 +4,9 @@ import {
   ImageResizeMode,
   FlexAlignType,
   ViewStyle,
-  FlexStyle, ImageStyle
-} from "react-native";
+  FlexStyle,
+  ImageStyle,
+} from 'react-native';
 import React, {memo} from 'react';
 interface ImageProps {
   src: ImageSourcePropType;
@@ -24,6 +25,7 @@ interface ImageProps {
   flex?: number;
   style?: ImageStyle;
   borderRadius?: number;
+  opacity?: number;
 }
 const ImageComponent = (props: ImageProps) => {
   const {
@@ -41,6 +43,7 @@ const ImageComponent = (props: ImageProps) => {
     marginTop = 0,
     marginVertical = 0,
     flex,
+    opacity,
     borderRadius,
     style,
   } = props;
@@ -64,6 +67,7 @@ const ImageComponent = (props: ImageProps) => {
           marginVertical: marginVertical,
           flex: flex ?? 0,
           borderRadius: borderRadius ?? 0,
+          opacity: opacity ?? 1,
         },
       ]}
     />

@@ -1,4 +1,4 @@
-import { View, Text, FlexStyle } from "react-native";
+import {View, Text, FlexStyle, TextStyle} from 'react-native';
 import React, {memo} from 'react';
 import {globalStyle} from '../styles/globalStyle';
 import {appColors} from '../assets/colors/appColors';
@@ -27,6 +27,8 @@ interface TextProps extends FlexStyle {
     | '900'
     | undefined;
   lineHeight?: number;
+  maxLine?: number;
+  style?: TextStyle;
 }
 const TextComponent = (props: TextProps) => {
   const {
@@ -43,12 +45,16 @@ const TextComponent = (props: TextProps) => {
     marginHorizontal,
     margin,
     fontWeight,
-    lineHeight
+    lineHeight,
+    maxLine,
+    style,
   } = props;
   return (
     <Text
+      numberOfLines={maxLine}
       style={[
         globalStyle.textStyle,
+        style,
         {
           color: color ?? appColors.white,
           fontFamily: fontFamily,

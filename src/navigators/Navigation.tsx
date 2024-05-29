@@ -8,20 +8,31 @@ import SignUpScreen from '../screens/Auth/SignUpScreen.tsx';
 import BottomTabNavigation from './BottomTabNavigation.tsx';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen';
 import Cart from '../screens/Cart';
-
-const Stack = createNativeStackNavigator();
+import ShippingAddress from '../screens/shipping-address';
+import CheckoutScreen from '../screens/checkout';
+import {RootStackParamList} from './RootStackParamList.ts';
+import PaymentScreen from '../screens/Payment';
+import PaymentHandleScreen from '../screens/PaymentHandle';
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name={PageName.WelcomeScreen} component={WelcomeScreen} />
-      <Stack.Screen name={PageName.Login} component={LoginScreen} />
-      <Stack.Screen name={PageName.Register} component={SignUpScreen} />
-      <Stack.Screen name={PageName.BottomTab} component={BottomTabNavigation} />
+      <Stack.Screen name={'WelcomeScreen'} component={WelcomeScreen} />
+      <Stack.Screen name={'Login'} component={LoginScreen} />
+      <Stack.Screen name={'Register'} component={SignUpScreen} />
+      <Stack.Screen name={'BottomTab'} component={BottomTabNavigation} />
       <Stack.Screen
-        name={PageName.ProductDetailsScreen}
+        name={'ProductDetailsScreen'}
         component={ProductDetailsScreen}
       />
-      <Stack.Screen name={PageName.Cart} component={Cart} />
+      <Stack.Screen name={'Cart'} component={Cart} />
+      <Stack.Screen name={'ShippingAddress'} component={ShippingAddress} />
+      <Stack.Screen name={'Checkout'} component={CheckoutScreen} />
+      <Stack.Screen name={'Payment'} component={PaymentScreen} />
+      <Stack.Screen
+        name={'PaymentHandleScreen'}
+        component={PaymentHandleScreen}
+      />
     </Stack.Navigator>
   );
 };

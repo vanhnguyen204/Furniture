@@ -5,6 +5,8 @@ import Categories from './components/Categories.tsx';
 import ListProduct from './components/ListProduct.tsx';
 import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
 import {fetchAllData} from '../../services/api/product.ts';
+import {navigatePush} from '../../utils/navigationUtils.ts';
+import {PageName} from '../../config/pageName.ts';
 
 const HomeScreen = () => {
   const {products, setProducts} = useStoreGlobal();
@@ -29,7 +31,12 @@ const HomeScreen = () => {
 
   return (
     <Container>
-      <Header onSearch={() => {}} onCart={() => {}} />
+      <Header
+        onSearch={() => {}}
+        onCart={() => {
+          navigatePush(PageName.Cart);
+        }}
+      />
       <Categories />
       <ListProduct
         onRefresh={onRefresh}

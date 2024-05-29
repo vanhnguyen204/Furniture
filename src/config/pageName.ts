@@ -11,4 +11,7 @@ export const PageName = {
   BottomTab: 'BottomTab',
   ProductDetailsScreen: 'ProductDetailsScreen',
   Cart: 'Cart',
+  ShippingAddress: 'ShippingAddress',
+  PaymentMethod: 'PaymentMethod',
+  Checkout: 'Checkout',
 };

@@ -5,6 +5,7 @@ import {
   CommonActions,
 } from '@react-navigation/native';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
+import { RootStackParamList } from "../navigators/RootStackParamList.ts";
 
 // Tạo tham chiếu navigation container
 const navigationRef = createNavigationContainerRef();
@@ -16,45 +17,50 @@ export const screenOptions: NativeStackNavigationOptions = {
   headerShown: false,
   animation: 'slide_from_right',
 };
-
-interface NavigationParams {
-  [key: string]: any;
-}
-
-export const navigate = (name: any, params?: NavigationParams) => {
+export const navigate = <RouteName extends keyof RootStackParamList>(
+  name: RouteName,
+  params?: RootStackParamList[RouteName],
+) => {
   if (navigationRef.isReady()) {
     // @ts-ignore
     navigationRef.navigate(name, params);
   }
 };
 
-export const navigatePush = (name: string, params?: NavigationParams) => {
+export const navigatePush = <RouteName extends keyof RootStackParamList>(
+  name: RouteName,
+  params?: RootStackParamList[RouteName],
+) => {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(StackActions.push(name, params));
   }
 };
 
-export const navigateAndReset = (routes: string[], index: number = 0) => {
+export const navigateAndReset = (
+  routes: Array<{name: keyof RootStackParamList; params?: any}>,
+  index: number = 0,
+) => {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(
       CommonActions.reset({
         index,
-        routes: routes.map(route => ({name: route})),
+        routes: routes.map(route => ({name: route.name, params: route.params})),
       }),
     );
   }
 };
 
-export function navigateReplace(name: string, param?: NavigationParams) {
+export function navigateReplace<RouteName extends keyof RootStackParamList>(
+  name: RouteName,
+  params?: RootStackParamList[RouteName],
+) {
   if (navigationRef.isReady()) {
-    navigationRef.dispatch(
-      StackActions.replace(name, {
-        param,
-      }),
-    );
+    navigationRef.dispatch(StackActions.replace(name, params));
   }
 }
 
 export const goBackNavigation = () => {
-  navigationRef.goBack();
+  if (navigationRef.canGoBack()) {
+    navigationRef.goBack();
+  }
 };
