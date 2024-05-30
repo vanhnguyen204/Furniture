@@ -9,7 +9,6 @@ import ButtonComponent from '../../components/ButtonComponent.tsx';
 import FormShippingAddress from '../../components/FormShippingAddress.tsx';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import {Alert, FlatList} from 'react-native';
-import ItemFavorite from '../MarkScreen/components/ItemFavorite.tsx';
 import ItemShoppingAddress from './components/ItemShoppingAddress.tsx';
 import Address from '../../models/Address.ts';
 import Spacer from '../../components/Spacer.tsx';
@@ -40,9 +39,11 @@ const ShippingAddress = () => {
     isSelected: false,
     recipient: '',
   });
+  const [isCreate, setIsCreate] = useState(false);
   const handleUpdateShippingAddress = useCallback(
     (address: Address) => {
       toggleModal();
+      setIsCreate(false);
       setAddressUpdating(prevState => ({
         ...prevState,
         country: address.country,
@@ -65,16 +66,14 @@ const ShippingAddress = () => {
               _id: '',
               isSelected: false,
             };
-            if (!initialValues) {
+            if (isCreate) {
               const response = await createShippingAddress(address);
-              if (response.status === 201) {
-                // @ts-ignore
-                setMyAddress(myAddresses, response.newAddress);
-                console.log(myAddresses);
-              }
+              // @ts-ignore
+              setMyAddress(myAddresses, response.newAddress);
+              console.log(myAddresses);
             } else {
               const filter = myAddresses.map((item: Address) => {
-                if (item._id === initialValues._id) {
+                if (item._id === initialValues?._id) {
                   item.country = inputValues.country;
                   item.city = inputValues.city;
                   item.district = inputValues.district;
@@ -85,6 +84,7 @@ const ShippingAddress = () => {
               });
               setMyAddress(filter);
             }
+            setIsCreate(false);
           } catch (e) {
             console.log(e);
             Alert.alert(
@@ -163,6 +163,7 @@ const ShippingAddress = () => {
           name={'Add shipping address'}
           onPress={() => {
             toggleModal();
+            setIsCreate(true);
           }}>
           <ImageComponent
             src={require('../../assets/icons/plus_child.png')}

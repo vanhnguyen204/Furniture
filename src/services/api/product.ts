@@ -1,5 +1,6 @@
 import {Method, request} from '../axiosClient.ts';
 import endPoint from '../endPoint.ts';
+import Product from "../../models/Product.ts";
 
 export const fetchAllData = () =>
   request(endPoint().listProductGlobal, Method.GET);

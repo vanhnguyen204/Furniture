@@ -235,6 +235,7 @@ const PaymentHandleScreen = () => {
                 type: bankDefault.type,
                 isSelected: false,
                 image: '',
+                _id: '',
               };
               setIsLoading(true);
               createPayment(payment)
@@ -253,7 +254,6 @@ const PaymentHandleScreen = () => {
                       ],
                     );
                   }
-
                   setIsLoading(false);
                 })
                 .catch(e => {

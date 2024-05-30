@@ -13,6 +13,8 @@ import CheckoutScreen from '../screens/checkout';
 import {RootStackParamList} from './RootStackParamList.ts';
 import PaymentScreen from '../screens/Payment';
 import PaymentHandleScreen from '../screens/PaymentHandle';
+import MyProducts from '../screens/MyProducts';
+import ManageMyProducts from '../screens/ManageMyProducts';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
   return (
@@ -33,6 +35,8 @@ const Navigation = () => {
         name={'PaymentHandleScreen'}
         component={PaymentHandleScreen}
       />
+      <Stack.Screen name={'MyProducts'} component={MyProducts} />
+      <Stack.Screen name={'ManageMyProducts'} component={ManageMyProducts} />
     </Stack.Navigator>
   );
 };

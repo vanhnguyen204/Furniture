@@ -33,6 +33,6 @@ export default () => {
     getMyPayment: `${baseURL}/api/payment/my-payment`,
     createPayment: `${baseURL}/api/payment/`,
     removePayment: `${baseURL}/api/payment/`,
-    activePayment: `${baseURL}/api/payment/`,
+    activePayment: `${baseURL}/api/payment/active`,
   };
 };

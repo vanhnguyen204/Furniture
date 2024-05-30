@@ -14,3 +14,6 @@ export const createPayment = (payment: Payment) =>
 
 export const fetchMyPayment = () =>
   request(endPoint().getMyPayment, Method.POST);
+
+export const activePayment = (id: string) =>
+  request(endPoint().activePayment, Method.POST, {paymentId: id});

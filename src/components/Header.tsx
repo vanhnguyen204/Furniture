@@ -1,9 +1,10 @@
 import React from 'react';
 import Box from './Box.tsx';
 import ButtonComponent from './ButtonComponent.tsx';
-import {ImageRequireSource} from 'react-native';
+import {ImageRequireSource, View} from 'react-native';
 import TextComponent from './TextComponent.tsx';
 import ImageComponent from './ImageComponent.tsx';
+import {appColors} from '../assets/colors/appColors.ts';
 interface HeaderProps {
   onLeftPress?: () => void;
   title?: string;
@@ -56,7 +57,9 @@ const Header = (props: HeaderProps) => {
             width={sizeIconLeft ? sizeIconLeft : 30}
           />
         ) : (
-          <TextComponent value={''} />
+          <Box height={30} width={30} backgroundColor={appColors.transparent}>
+            <View />
+          </Box>
         )}
       </ButtonComponent>
       <TextComponent

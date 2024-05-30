@@ -37,9 +37,7 @@ const ProfileScreen = () => {
     {
       id: 3,
       name: 'Payment Method',
-      value: `You have ${
-        myPayments.length < 10 ? '0' + myPayments.length : myPayments.length
-      } cards`,
+      value: `You have ${myPayments.length} cards`,
       onPress: () => {
         navigatePush('Payment');
       },
@@ -52,6 +50,14 @@ const ProfileScreen = () => {
     },
     {
       id: 5,
+      name: 'My products',
+      value: 'My products',
+      onPress: () => {
+        navigatePush('MyProducts');
+      },
+    },
+    {
+      id: 6,
       name: 'Setting',
       value: 'Password, FAQ, Contact',
       onPress: () => {},
@@ -60,7 +66,6 @@ const ProfileScreen = () => {
   return (
     <Container>
       <Header
-        iconLeft={require('../../assets/icons/search_2.png')}
         iconRight={require('../../assets/icons/logout.png')}
         title={'Profile'}
         colorTitle={appColors.black900}
@@ -109,7 +114,7 @@ const ProfileScreen = () => {
         </Box>
         {profileTypes.map((item, index) => (
           <ButtonComponent
-            padding={15}
+            padding={10}
             borderRadius={7}
             backgroundColor={appColors.white}
             marginTop={10}
@@ -123,7 +128,6 @@ const ProfileScreen = () => {
                 value={item.name}
                 color={appColors.black900}
                 fontSize={18}
-                lineHeight={24.55}
                 fontWeight={'500'}
                 marginBottom={10}
               />

@@ -10,4 +10,6 @@ export type RootStackParamList = {
   ShippingAddress: undefined;
   Payment: undefined;
   PaymentHandleScreen: {item?: any};
+  MyProducts: undefined;
+  ManageMyProducts: {isCreate: boolean};
 };

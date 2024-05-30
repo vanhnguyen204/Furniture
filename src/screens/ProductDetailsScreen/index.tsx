@@ -17,10 +17,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import {addProductToCart} from '../../services/api/cart.ts';
-import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../../navigators/RootStackParamList.ts";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type CheckoutScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -114,10 +113,11 @@ const ProductDetailsScreen = (props: Props) => {
           />
           <ButtonComponent
             padding={5}
+            alignSelf={'flex-start'}
+            position={'absolute'}
+            left={-17.5}
             backgroundColor={appColors.white}
             borderRadius={10}
-            alignSelf={'auto'}
-            style={{position: 'absolute', left: -20, top: 20}}
             name={'Back'}
             onPress={() => goBackNavigation()}>
             <ImageComponent
