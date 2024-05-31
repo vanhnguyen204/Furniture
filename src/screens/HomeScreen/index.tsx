@@ -7,11 +7,14 @@ import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
 import {fetchAllData} from '../../services/api/product.ts';
 import {navigatePush} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
+import ModalSearch from '../../components/ModalSearch.tsx';
 
 const HomeScreen = () => {
   const {products, setProducts} = useStoreGlobal();
+  const [visibleModalSearch, setVisibleModalSearch] = useState(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-
+  const toggleModalSearch = () =>
+    setVisibleModalSearch(prevState => !prevState);
   const onRefresh = useCallback(async () => {
     setRefreshing(true); // Start refreshing indicator
     fetchAllData()
@@ -31,10 +34,11 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <ModalSearch onClose={toggleModalSearch} visible={visibleModalSearch} />
       <Header
-        onSearch={() => {}}
+        onSearch={toggleModalSearch}
         onCart={() => {
-          navigatePush(PageName.Cart);
+          navigatePush('Cart');
         }}
       />
       <Categories />

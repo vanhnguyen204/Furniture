@@ -62,7 +62,7 @@ const MarkScreen = () => {
           iconLeft={require('../../assets/icons/search_2.png')}
           iconRight={require('../../assets/icons/cart.png')}
           sizeIconRight={25}
-          onRightPress={() => navigatePush(PageName.Cart)}
+          onRightPress={() => navigatePush('Cart')}
         />
       )}
       <ListFavorites

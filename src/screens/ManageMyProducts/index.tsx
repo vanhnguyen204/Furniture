@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Box from '../../components/Box.tsx';
 import Header from '../../components/Header.tsx';
@@ -14,8 +14,14 @@ import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import TextComponent from '../../components/TextComponent.tsx';
 import InputComponent from '../../components/InputComponent.tsx';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {createProduct} from '../../services/api/product.ts';
+import {
+  createProduct,
+  deleteProduct,
+  updateProduct,
+} from '../../services/api/product.ts';
 import {Alert} from 'react-native';
+import {useMyProducts} from '../../hooks/useMyProducts.ts';
+import {imageUrl} from '../../utils/ip.ts';
 type CheckoutScreenRouteProp = RouteProp<
   RootStackParamList,
   'ManageMyProducts'
@@ -36,13 +42,13 @@ type FormValues = {
   price: number;
 };
 const ManageMyProducts = (props: Props) => {
-  const {isCreate} = props.route.params;
+  const {isCreate, item} = props.route.params;
   const [image, setImage] = useState({
     uri: '',
     type: '',
     name: '',
   });
-
+  const {addNewProduct} = useMyProducts();
   const handleSelectImage = () => {
     try {
       launchImageLibrary({
@@ -73,7 +79,14 @@ const ManageMyProducts = (props: Props) => {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: item?.name,
+      description: item?.description,
+      type: item?.type,
+      price: item?.price,
+    },
+  });
 
   const type = [
     {label: 'Chair', value: 'chair'},
@@ -82,45 +95,71 @@ const ManageMyProducts = (props: Props) => {
     {label: 'Bed', value: 'bed'},
     {label: 'Lamp', value: 'lamp'},
   ];
+  // useEffect(() => {}, []);
   const [valueType, setValue] = useState(type[0].value);
   const [openType, setOpenType] = useState(false);
   const onSubmit: SubmitHandler<FormValues> = data => {
-    const newProduct = data;
-    newProduct.type = valueType;
-    console.log(newProduct);
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('price', data.price);
     formData.append('description', data.description);
-    formData.append('file', {
-      type: image.type,
-      uri: image.uri,
-      name: image.name,
-    });
+
+    if (image.uri) {
+      formData.append('file', {
+        type: image.type,
+        uri: image.uri,
+        name: image.name,
+      });
+    } else {
+      formData.append('imageUpdate', item?.image);
+    }
     formData.append('type', valueType);
 
-    if (!image.uri || !image.type || !image.name) {
+    if (isCreate && (!image.uri || !image.type || !image.name)) {
       Alert.alert('Notification', 'Product images cannot be blank.');
       return;
     }
 
-    createProduct(formData)
-      .then(res => {
-        console.log(res);
-        if (res.status === 201) {
-          Alert.alert('Notification', 'Create new product success.', [
-            {
-              text: 'Ok',
-              onPress: () => {
-                goBackNavigation();
+    if (isCreate) {
+      createProduct(formData)
+        .then(res => {
+          console.log(res);
+          // @ts-ignore
+          addNewProduct(res.newProduct);
+          if (res.status === 201) {
+            Alert.alert('Notification', 'Create new product success.', [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  goBackNavigation();
+                },
               },
-            },
-          ]);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
+            ]);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
+      formData.append('productId', item?._id);
+      updateProduct(formData)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            Alert.alert('Notification', 'Update product success.', [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  goBackNavigation();
+                },
+              },
+            ]);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   };
   const renderInput = (
     name: keyof FormValues,
@@ -146,7 +185,7 @@ const ManageMyProducts = (props: Props) => {
               onBlur={onBlur}
               onChangeText={onChange}
               // @ts-ignore
-              value={value}
+              value={value?.toString()}
               placeholder={placeholder}
               placeholderTextColor={appColors.grays.gray400}
             />
@@ -189,6 +228,8 @@ const ManageMyProducts = (props: Props) => {
             src={
               image.uri
                 ? {uri: image.uri}
+                : item?.image
+                ? {uri: imageUrl + item.image}
                 : require('../../assets/images/no-pictures.png')
             }
           />
@@ -230,14 +271,62 @@ const ManageMyProducts = (props: Props) => {
       <ButtonComponent
         backgroundColor={appColors.black900}
         marginHorizontal={20}
-        marginBottom={20}
+        marginBottom={isCreate ? 20 : 10}
         borderRadius={10}
         alignItems={'center'}
         nameColor={appColors.white}
         fontSize={16}
-        name={'Add product'}
+        name={isCreate ? 'Add product' : 'Update product'}
         onPress={handleSubmit(onSubmit)}
       />
+      {!isCreate && (
+        <ButtonComponent
+          backgroundColor={appColors.red}
+          marginHorizontal={20}
+          marginBottom={20}
+          borderRadius={10}
+          alignItems={'center'}
+          nameColor={appColors.white}
+          fontSize={16}
+          name={'Delete product'}
+          onPress={() => {
+            Alert.alert(
+              'Notification',
+              'Are you sure to discard this product?',
+              [
+                {
+                  text: 'Cancel',
+                },
+                {
+                  text: 'Delete',
+                  onPress: () => {
+                    deleteProduct(item?._id ?? '')
+                      .then(res => {
+                        if (res.status === 200) {
+                          Alert.alert(
+                            'Notification',
+                            'Delete product success.',
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => {
+                                  goBackNavigation();
+                                },
+                              },
+                            ],
+                          );
+                        }
+                      })
+                      .catch(e => {
+                        console.log(e);
+                      });
+                  },
+                },
+              ],
+            );
+          }}
+        />
+      )}
     </Container>
   );
 };

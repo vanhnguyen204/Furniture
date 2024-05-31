@@ -51,14 +51,14 @@ const ItemFavorite = (props: ItemFavoriteProps) => {
               name={`Delete favorite ${index}`}
               onPress={() => {
                 Alert.alert(
-                  'Cảnh báo',
-                  'Bạn có chắc muốn xoá sản phẩm này khỏi danh sách yêu thích không!',
+                  'Warning',
+                  'Are you sure to discard this product?',
                   [
                     {
-                      text: 'Huỷ',
+                      text: 'Cancel',
                     },
                     {
-                      text: 'Xoá',
+                      text: 'Remove',
                       onPress: () => handleDeleteFavorite(item._id),
                     },
                   ],

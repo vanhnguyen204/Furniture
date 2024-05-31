@@ -6,7 +6,9 @@ export default () => {
     baseURL: baseURL,
     register: `${baseURL}/api/auth/register`,
     login: `${baseURL}/api/auth/login`,
+    //product
     listProductGlobal: `${baseURL}/api/product/`,
+    getMyProducts: `${baseURL}/api/product/my-product`,
     productDetails: `${baseURL}/api/product/details`,
     deleteProduct: `${baseURL}/api/product/delete`,
     createProduct: `${baseURL}/api/product/create`,
@@ -34,5 +36,7 @@ export default () => {
     createPayment: `${baseURL}/api/payment/`,
     removePayment: `${baseURL}/api/payment/`,
     activePayment: `${baseURL}/api/payment/active`,
+    //search
+    searchProduct: `${baseURL}/api/product/search`,
   };
 };

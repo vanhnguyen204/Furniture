@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Box from '../../components/Box.tsx';
 import Header from '../../components/Header.tsx';
@@ -6,25 +6,78 @@ import ButtonComponent from '../../components/ButtonComponent.tsx';
 import ImageComponent from '../../components/ImageComponent.tsx';
 import {goBackNavigation, navigatePush} from '../../utils/navigationUtils.ts';
 import {appColors} from '../../assets/colors/appColors.ts';
+import {fetchMyProduct} from '../../services/api/product.ts';
+import {FlatList} from 'react-native';
+import MyProductItem from './components/MyProductItem.tsx';
+import {RouteProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'MyProducts'>;
+type CheckoutScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'MyProducts'
+>;
 
-const MyProducts = () => {
+type Props = {
+  route: CheckoutScreenRouteProp;
+  navigation: CheckoutScreenNavigationProp;
+};
+const MyProducts = (props: Props) => {
+  const {navigation} = props;
+  const [myProducts, setMyProducts] = useState([]);
+  useEffect(() => {
+    const unsub = navigation.addListener('focus', () => {
+      fetchMyProduct()
+        .then(res => {
+          // @ts-ignore
+          setMyProducts(res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    });
+    return () => {
+      unsub();
+    };
+  }, [navigation]);
   return (
     <Container>
       <Box flex={1}>
-        <Header
-          iconLeft={require('../../assets/icons/left.png')}
-          onLeftPress={() => goBackNavigation()}
-          title={'My Products'}
-          colorTitle={appColors.black900}
-          fontSizeTitle={16}
-          fontWeight={'600'}
+        <Box justifyContent={'center'}>
+          <Header
+            iconLeft={require('../../assets/icons/left.png')}
+            onLeftPress={() => goBackNavigation()}
+            title={'My Products'}
+            colorTitle={appColors.black900}
+            fontSizeTitle={18}
+            fontWeight={'600'}
+          />
+          <ButtonComponent
+            position={'absolute'}
+            end={20}
+            name={'User manual'}
+            onPress={() => {}}
+            padding={0}>
+            <ImageComponent
+              src={require('../../assets/icons/icon_what.png')}
+              width={23}
+              height={23}
+            />
+          </ButtonComponent>
+        </Box>
+        <FlatList
+          style={{flex: 1}}
+          numColumns={2}
+          data={myProducts}
+          renderItem={({item}) => <MyProductItem item={item} />}
         />
       </Box>
       <ButtonComponent
+        position={'absolute'}
+        bottom={50}
+        end={20}
         backgroundColor={appColors.grays.gray400}
         alignSelf={'flex-end'}
-        marginHorizontal={20}
-        marginBottom={20}
         name={'Add product'}
         onPress={() => {
           navigatePush('ManageMyProducts', {isCreate: true});

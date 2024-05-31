@@ -51,7 +51,7 @@ const ProfileScreen = () => {
     {
       id: 5,
       name: 'My products',
-      value: 'My products',
+      value: 'Manage your products',
       onPress: () => {
         navigatePush('MyProducts');
       },

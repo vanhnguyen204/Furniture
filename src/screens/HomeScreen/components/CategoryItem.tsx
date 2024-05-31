@@ -41,8 +41,8 @@ const CategoryItem = ({
         <ImageComponent
           alignSelf={'center'}
           src={item.image}
-          height={30}
-          width={30}
+          height={25}
+          width={25}
           tintColor={
             isSelected === index ? appColors.white : appColors.black900
           }

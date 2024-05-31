@@ -5,7 +5,7 @@ interface Product {
   description: string;
   image: any;
   type: string;
-  productId?: string;
+  _id?: string;
 }
 
 export default Product;
