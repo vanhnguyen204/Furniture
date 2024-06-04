@@ -6,9 +6,13 @@ import {goBackNavigation, navigatePush} from '../../utils/navigationUtils.ts';
 import Box from '../../components/Box.tsx';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
 import ImageComponent from '../../components/ImageComponent.tsx';
-import {activePayment, fetchMyPayment} from '../../services/api/payment.ts';
+import {
+  activePayment,
+  fetchMyPayment,
+  removePayment,
+} from '../../services/api/payment.ts';
 import TextComponent from '../../components/TextComponent.tsx';
-import {FlatList} from 'react-native';
+import {Alert, FlatList} from 'react-native';
 import Payment from '../../models/Payment.ts';
 import BackgroundCard from '../../components/BackgroundCard.tsx';
 import {imageUrl} from '../../utils/ip.ts';
@@ -32,16 +36,19 @@ type Props = {
 const PaymentScreen = (props: Props) => {
   const {navigation} = props;
   const [myPayment, setMyPayment] = useState<Payment[]>([]);
+  const getMyPayment = () => {
+    fetchMyPayment()
+      .then(res => {
+        // @ts-ignore
+        setMyPayment(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
   useEffect(() => {
     const unSub = navigation.addListener('focus', () => {
-      fetchMyPayment()
-        .then(res => {
-          // @ts-ignore
-          setMyPayment(res);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      getMyPayment();
     });
     return () => {
       unSub();
@@ -68,6 +75,42 @@ const PaymentScreen = (props: Props) => {
       console.log(e);
     }
   };
+  const handleDeletePaymentMethod = (
+    id: string,
+    index: number,
+    isSelected: boolean,
+  ) => {
+    if (isSelected) {
+      Alert.alert(
+        'Notification',
+        'This payment method is in use,  cannot be deleted at this time.',
+      );
+      return;
+    }
+    Alert.alert('Warning', 'Are you sure to remove this payment method?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Remove',
+        onPress: () => {
+          removePayment(id ?? '')
+            .then(res => {
+              if (res.status === 200) {
+                setMyPayment(prevState => {
+                  return prevState.filter((it, i) => {
+                    return index !== i;
+                  });
+                });
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        },
+      },
+    ]);
+  };
   return (
     <Container justifyContent={'space-between'}>
       <Box flex={1}>
@@ -90,7 +133,7 @@ const PaymentScreen = (props: Props) => {
           <FlatList
             data={myPayment}
             renderItem={({item, index}) => (
-              <Box>
+              <Box marginBottom={15}>
                 <Box
                   paddingHorizontal={20}
                   marginVertical={10}
@@ -107,6 +150,22 @@ const PaymentScreen = (props: Props) => {
                     color={appColors.black900}
                     marginLeft={10}
                   />
+                  <Box position={'absolute'} right={10}>
+                    <ButtonComponent
+                      onPress={() => {
+                        handleDeletePaymentMethod(
+                          item._id ?? '',
+                          index,
+                          item.isSelected,
+                        );
+                      }}>
+                      <ImageComponent
+                        src={require('../../assets/icons/trash-bin.png')}
+                        width={25}
+                        height={25}
+                      />
+                    </ButtonComponent>
+                  </Box>
                 </Box>
                 <BackgroundCard
                   paymentName={item.bankName}

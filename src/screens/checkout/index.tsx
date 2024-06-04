@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Header from '../../components/Header.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
 import {getMyAddressIsSelected} from '../../services/api/shippingAddress.ts';
-import {goBackNavigation} from '../../utils/navigationUtils.ts';
+import {goBackNavigation, navigatePush} from '../../utils/navigationUtils.ts';
 import Box from '../../components/Box.tsx';
-import {View} from 'react-native';
+import {Alert, View} from 'react-native';
 import TextComponent from '../../components/TextComponent.tsx';
 import ImageComponent from '../../components/ImageComponent.tsx';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
@@ -13,6 +13,11 @@ import {AppInfor} from '../../constants/AppInfor.ts';
 import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {getMySelectedPayment} from '../../services/api/payment.ts';
+import {imageUrl} from '../../utils/ip.ts';
+import CheckBox from '../../components/CheckBox.tsx';
+import {createInvoice} from '../../services/index.ts';
+import {RequestInvoice} from '../../services/api/invoice.ts';
 
 type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'Checkout'>;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
@@ -25,7 +30,11 @@ type Props = {
   navigation: CheckoutScreenNavigationProp;
 };
 const CheckoutScreen = (props: Props) => {
-  const {totalPrice} = props.route.params;
+  const {totalPrice, products} = props.route.params;
+  console.log('List cart check out');
+  console.log(products);
+
+  const [isFastDelivery, setIsFastDelivery] = useState(true);
   const [currenShippingAddress, setCurrenShippingAddress] = useState({
     recipient: '',
     addressDetail: '',
@@ -33,15 +42,11 @@ const CheckoutScreen = (props: Props) => {
     city: '',
     country: '',
   });
-  useEffect(() => {
-    getMyAddressIsSelected()
-      .then(res => {
-        setCurrenShippingAddress(res.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }, []);
+  const [currentPayment, setCurrentPayment] = useState({
+    image: '',
+    cardNumber: '',
+  });
+
   const somePrice = [
     {
       name: 'Order:',
@@ -49,13 +54,70 @@ const CheckoutScreen = (props: Props) => {
     },
     {
       name: 'Delivery:',
-      price: 5,
+      price: isFastDelivery ? 5 : 2,
     },
     {
       name: 'Total:',
-      price: totalPrice + 5,
+      price: totalPrice + (isFastDelivery ? 5 : 2),
     },
   ];
+  const handleRenderCardNumber = useMemo(
+    () => (cardNumber: string) => {
+      let sub = cardNumber.substring(cardNumber.length - 4);
+      let star = '';
+      for (let i = 0; i < cardNumber.length - 4; i++) {
+        star += '*';
+      }
+      return star + sub;
+    },
+    [],
+  );
+  const handleConfirmCheckout = () => {
+    const filter: RequestInvoice[] = products.map(item => {
+      return {
+        productId: item._id ?? '',
+        price: item.price,
+        quantity: item.quantity,
+      };
+    });
+    createInvoice(filter)
+      .then(res => {
+        if (res.status === 201) {
+          navigatePush('DonePurchase');
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    const unsub = props.navigation.addListener('focus', () => {
+      getMyAddressIsSelected()
+        .then(res => {
+          setCurrenShippingAddress(res.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      getMySelectedPayment()
+        .then(res => {
+          console.log(res);
+          setCurrentPayment({
+            // @ts-ignore
+            image: res.image,
+            // @ts-ignore
+            cardNumber: res.cartNumber,
+          });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [props.navigation]);
   return (
     <Container justifyContent={'space-between'}>
       <Box>
@@ -81,7 +143,9 @@ const CheckoutScreen = (props: Props) => {
             />
             <ButtonComponent
               name={'Pen edit shipping address'}
-              onPress={() => {}}>
+              onPress={() => {
+                navigatePush('ShippingAddress');
+              }}>
               <ImageComponent
                 src={require('../../assets/icons/pen_icon.png')}
                 width={25}
@@ -132,7 +196,11 @@ const CheckoutScreen = (props: Props) => {
               color={appColors.grays.gray450}
               fontWeight={'600'}
             />
-            <ButtonComponent name={'Pen edit payment'} onPress={() => {}}>
+            <ButtonComponent
+              name={'Pen edit payment'}
+              onPress={() => {
+                navigatePush('Payment');
+              }}>
               <ImageComponent
                 src={require('../../assets/icons/pen_icon.png')}
                 width={25}
@@ -148,12 +216,12 @@ const CheckoutScreen = (props: Props) => {
             alignItems={'center'}
             backgroundColor={appColors.white}>
             <ImageComponent
-              src={require('../../assets/icons/mastercard.png')}
+              src={{uri: imageUrl + currentPayment.image}}
               width={30}
               height={30}
             />
             <TextComponent
-              value={'**** **** **** 2004'}
+              value={handleRenderCardNumber(currentPayment.cardNumber)}
               color={appColors.black900}
               fontSize={14}
               fontWeight={'400'}
@@ -171,13 +239,12 @@ const CheckoutScreen = (props: Props) => {
               color={appColors.grays.gray450}
               fontWeight={'600'}
             />
-            <ButtonComponent name={'Pen edit Payment'} onPress={() => {}}>
-              <ImageComponent
-                src={require('../../assets/icons/pen_icon.png')}
-                width={25}
-                height={25}
-              />
-            </ButtonComponent>
+            <CheckBox
+              isChecked={isFastDelivery}
+              onCheck={() => {
+                setIsFastDelivery(prevState => !prevState);
+              }}
+            />
           </Box>
           <Box
             radius={5}
@@ -192,7 +259,7 @@ const CheckoutScreen = (props: Props) => {
               height={50}
             />
             <TextComponent
-              value={'Fast (2-3days)'}
+              value={isFastDelivery ? 'Fast (2-3 days)' : 'Standard (4-5 days)'}
               color={appColors.black900}
               fontSize={14}
               fontWeight={'400'}
@@ -229,11 +296,14 @@ const CheckoutScreen = (props: Props) => {
       </Box>
       <ButtonComponent
         name={'SUBMIT ORDER'}
-        onPress={() => {}}
+        onPress={() => {
+          handleConfirmCheckout();
+        }}
         backgroundColor={appColors.black900}
         padding={15}
         alignItems={'center'}
         marginHorizontal={20}
+        borderRadius={10}
       />
     </Container>
   );

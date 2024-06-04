@@ -2,7 +2,7 @@ import Product from '../models/Product.ts';
 
 export type RootStackParamList = {
   Home: undefined;
-  Checkout: {totalPrice: number};
+  Checkout: {totalPrice: number; products: Product[]};
   WelcomeScreen: undefined;
   Login: undefined;
   Register: undefined;
@@ -14,4 +14,5 @@ export type RootStackParamList = {
   PaymentHandleScreen: {item?: any};
   MyProducts: undefined;
   ManageMyProducts: {isCreate: boolean; item?: Product};
+  DonePurchase: undefined;
 };

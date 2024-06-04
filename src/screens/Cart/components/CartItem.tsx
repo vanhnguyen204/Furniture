@@ -38,13 +38,13 @@ const CartItem = (props: ItemProps) => {
           <Box flexDirection={'row'} justifyContent={'space-between'}>
             <Box>
               <TextComponent
-                value={item.name}
+                value={item?.name}
                 color={appColors.grays.gray450}
                 fontSize={14}
                 fontWeight={'600'}
               />
               <TextComponent
-                value={`$ ${item.price}`}
+                value={`$ ${item?.price}`}
                 color={appColors.black900}
                 fontWeight={'700'}
                 fontSize={16}
@@ -66,7 +66,7 @@ const CartItem = (props: ItemProps) => {
                     {
                       text: 'Xoá',
                       onPress: () => {
-                        removeFromCart(item._id)
+                        removeFromCart(item?._id)
                           .then(res => {
                             console.log(res);
                             remove(index);
@@ -110,7 +110,7 @@ const CartItem = (props: ItemProps) => {
                 justifyContent: 'center',
               }}>
               <TextComponent
-                value={listCart[index].quantity}
+                value={listCart[index]?.quantity}
                 color={appColors.black900}
                 marginHorizontal={15}
                 fontSize={18}
@@ -118,7 +118,7 @@ const CartItem = (props: ItemProps) => {
               />
             </View>
             <ButtonComponent
-              name={'increase'}
+              name={'reduce'}
               onPress={() => {
                 handleReduceQuantity(index);
               }}

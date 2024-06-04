@@ -59,7 +59,10 @@ const MarkScreen = () => {
           onLeftPress={() => {
             setIsSearch(prevState => !prevState);
           }}
-          iconLeft={require('../../assets/icons/search_2.png')}
+          title={'Favorite'}
+          fontSizeTitle={16}
+          fontWeight={'600'}
+          colorTitle={appColors.black900}
           iconRight={require('../../assets/icons/cart.png')}
           sizeIconRight={25}
           onRightPress={() => navigatePush('Cart')}

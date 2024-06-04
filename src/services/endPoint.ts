@@ -36,7 +36,11 @@ export default () => {
     createPayment: `${baseURL}/api/payment/`,
     removePayment: `${baseURL}/api/payment/`,
     activePayment: `${baseURL}/api/payment/active`,
+    getMySelectedPayment: `${baseURL}/api/payment/my-selected-payment`,
     //search
     searchProduct: `${baseURL}/api/product/search`,
+
+    //invoice
+    createInvoice: `${baseURL}/api/invoice/`,
   };
 };

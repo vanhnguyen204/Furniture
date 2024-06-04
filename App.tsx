@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/navigators/Navigation.tsx';
 import {navigationRef} from './src/utils/navigationUtils.ts';
 import {StatusBar} from 'react-native';
-import {appColors} from './src/assets/colors/appColors.ts';
 
 const App = () => {
   return (

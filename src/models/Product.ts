@@ -1,4 +1,5 @@
 interface Product {
+  [x: string]: any;
   userId?: string;
   name: string;
   price: number;

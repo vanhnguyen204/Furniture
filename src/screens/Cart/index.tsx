@@ -5,7 +5,7 @@ import {goBackNavigation, navigatePush} from '../../utils/navigationUtils.ts';
 import {appColors} from '../../assets/colors/appColors.ts';
 import {getMyCart} from '../../services/api/cart.ts';
 import TextComponent from '../../components/TextComponent.tsx';
-import {FlatList} from 'react-native';
+import {Alert, FlatList} from 'react-native';
 import CartItem from './components/CartItem.tsx';
 import Box from '../../components/Box.tsx';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
@@ -25,8 +25,9 @@ const Cart = () => {
   const calculateTotalPrice = useMemo(() => {
     let sum = 0;
     listCart.map(item => {
+      console.log(item);
       // @ts-ignore
-      return (sum += item.price * item.quantity);
+      return (sum += item?.price * item?.quantity);
     });
     return sum;
   }, [listCart]);
@@ -72,9 +73,22 @@ const Cart = () => {
       });
     });
   }, []);
+  const gotoCheckout = () => {
+    if (listCart.length !== 0) {
+      navigatePush('Checkout', {
+        totalPrice: calculateTotalPrice,
+        products: listCart,
+      });
+    } else {
+      Alert.alert(
+        'Notification',
+        'Your cart is empty. Please add some product into your cart.',
+      );
+    }
+  };
   return (
     <Container justifyContent={'space-between'}>
-      <Box>
+      <Box flex={1}>
         <Header
           iconLeft={require('../../assets/icons/left.png')}
           sizeIconLeft={30}
@@ -87,7 +101,12 @@ const Cart = () => {
           colorTitle={appColors.black900}
         />
         {listCart.length === 0 ? (
-          <TextComponent value={'Bạn chưa thêm sản phẩm nào vào giỏ hàng.'} />
+          <Box flex={1} alignItems="center" justifyContent="center">
+            <TextComponent
+              value={'You have not added any products to your cart.'}
+              color={appColors.black900}
+            />
+          </Box>
         ) : (
           <FlatList
             data={listCart}
@@ -128,11 +147,7 @@ const Cart = () => {
           backgroundColor={appColors.black900}
           borderRadius={15}
           name={'Check out'}
-          onPress={() => {
-            navigatePush('Checkout', {
-              totalPrice: calculateTotalPrice,
-            });
-          }}
+          onPress={gotoCheckout}
           alignItems={'center'}
           justifyContent={'center'}
           padding={20}

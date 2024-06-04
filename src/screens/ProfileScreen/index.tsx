@@ -19,11 +19,7 @@ const ProfileScreen = () => {
     {
       id: 1,
       name: 'My orders',
-      value: `${
-        myOrders.length === 0
-          ? "Don't have any orders"
-          : 'Already have' + myOrders.length + 'orders'
-      } orders`,
+      value: 'View my orders',
       onPress: () => {},
     },
     {
@@ -37,7 +33,7 @@ const ProfileScreen = () => {
     {
       id: 3,
       name: 'Payment Method',
-      value: `You have ${myPayments.length} cards`,
+      value: 'Manage your payment',
       onPress: () => {
         navigatePush('Payment');
       },
