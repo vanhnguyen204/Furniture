@@ -15,8 +15,10 @@ import PaymentHandleScreen from '../screens/PaymentHandle';
 import MyProducts from '../screens/MyProducts';
 import ManageMyProducts from '../screens/ManageMyProducts';
 import DonePurchase from '../screens/DonePurchase/index.tsx';
-import HistoryPurchase from '../screens/HistoryPurchase/index.tsx';
+
 import WelcomeScreen from '../screens/WelcomeScreen';
+import HistoryPurchase from '../screens/HistoryPurchase';
+import InvoiceDetails from '../screens/InvoiceDetails';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -42,6 +44,7 @@ const Navigation = () => {
       <Stack.Screen name={'ManageMyProducts'} component={ManageMyProducts} />
       <Stack.Screen name={'DonePurchase'} component={DonePurchase} />
       <Stack.Screen name={'HistoryPurchase'} component={HistoryPurchase} />
+      <Stack.Screen name={'InvoiceDetails'} component={InvoiceDetails} />
     </Stack.Navigator>
   );
 };

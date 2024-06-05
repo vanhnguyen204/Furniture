@@ -1,4 +1,5 @@
 import Product from '../models/Product.ts';
+import Invoice from '../models/Invoice.ts';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -16,4 +17,5 @@ export type RootStackParamList = {
   ManageMyProducts: {isCreate: boolean; item?: Product};
   DonePurchase: undefined;
   HistoryPurchase: undefined;
+  InvoiceDetails: {invoice: Invoice};
 };

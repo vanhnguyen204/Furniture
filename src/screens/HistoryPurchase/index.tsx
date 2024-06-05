@@ -15,11 +15,11 @@ import {goBackNavigation} from '../../utils/navigationUtils.ts';
 
 type CheckoutScreenRouteProp = RouteProp<
   RootStackParamList,
-  'ProductDetailsScreen'
+  'HistoryPurchase'
 >;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'Checkout'
+  'HistoryPurchase'
 >;
 
 type Props = {

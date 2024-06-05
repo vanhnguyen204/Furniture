@@ -23,3 +23,5 @@ export const createInvoice = (
   });
 
 export const getMyInvoice = () => request(endPoint().getMyInvoice, Method.GET);
+export const getInvoiceDetails = (invoiceId: string) =>
+  request(endPoint().getInvoiceDetails, Method.POST, {invoiceId});

@@ -4,6 +4,7 @@ import Box from '../../../components/Box.tsx';
 import TextComponent from '../../../components/TextComponent.tsx';
 import {appColors} from '../../../assets/colors/appColors.ts';
 import ButtonComponent from '../../../components/ButtonComponent.tsx';
+import {navigatePush} from '../../../utils/navigationUtils.ts';
 interface InvoiceItemProps {
   item: Invoice;
 }
@@ -65,7 +66,7 @@ const InvoiceItem = (props: InvoiceItemProps) => {
           <TextComponent value={'Total price: '} color={appColors.black900} />
           <TextComponent
             value={`$ ${item.totalPrice}.0`}
-            color={'#64DD17'}
+            color={'#7CB342'}
             fontWeight={'600'}
             fontSize={18}
           />
@@ -75,7 +76,9 @@ const InvoiceItem = (props: InvoiceItemProps) => {
           borderRadius={5}
           paddingVertical={5}
           name={'Detail'}
-          onPress={() => {}}
+          onPress={() => {
+            navigatePush('InvoiceDetails', {invoice: item});
+          }}
           nameColor={appColors.white}
           backgroundColor={appColors.black900}
         />

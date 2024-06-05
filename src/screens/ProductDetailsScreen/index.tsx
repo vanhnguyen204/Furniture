@@ -56,9 +56,7 @@ const ProductDetailsScreen = (props: Props) => {
             setIsProductFavorite(false);
           }
         })
-        .catch(e => {
-          console.log(e);
-        });
+        .catch(e => {});
     } catch (e) {
       console.log(e);
     }

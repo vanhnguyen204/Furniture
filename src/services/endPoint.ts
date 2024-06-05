@@ -43,5 +43,6 @@ export default () => {
     //invoice
     createInvoice: `${baseURL}/api/invoice/`,
     getMyInvoice: `${baseURL}/api/invoice/`,
+    getInvoiceDetails: `${baseURL}/api/invoice/details`,
   };
 };
