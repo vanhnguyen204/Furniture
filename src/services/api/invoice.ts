@@ -7,5 +7,17 @@ export interface RequestInvoice {
   quantity: number;
 }
 
-export const createInvoice = (data: RequestInvoice[]) =>
-  request(endPoint().createInvoice, Method.POST, {data: data});
+export const createInvoice = (
+  data: RequestInvoice[],
+  totalPrice: number,
+  paymentType: string,
+  shippingAddress: string,
+  delivery: string,
+) =>
+  request(endPoint().createInvoice, Method.POST, {
+    data: data,
+    totalPrice,
+    paymentType,
+    shippingAddress,
+    delivery,
+  });

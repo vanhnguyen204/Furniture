@@ -16,7 +16,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {getMySelectedPayment} from '../../services/api/payment.ts';
 import {imageUrl} from '../../utils/ip.ts';
 import CheckBox from '../../components/CheckBox.tsx';
-import {createInvoice} from '../../services/index.ts';
+import {createInvoice} from '../../services';
 import {RequestInvoice} from '../../services/api/invoice.ts';
 
 type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'Checkout'>;
@@ -45,6 +45,7 @@ const CheckoutScreen = (props: Props) => {
   const [currentPayment, setCurrentPayment] = useState({
     image: '',
     cardNumber: '',
+    type: '',
   });
 
   const somePrice = [
@@ -80,15 +81,40 @@ const CheckoutScreen = (props: Props) => {
         quantity: item.quantity,
       };
     });
-    createInvoice(filter)
-      .then(res => {
-        if (res.status === 201) {
-          navigatePush('DonePurchase');
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    const shippingAddress =
+      currenShippingAddress.addressDetail +
+      ', ' +
+      currenShippingAddress.district +
+      ', ' +
+      currenShippingAddress.city +
+      ', ' +
+      currenShippingAddress.country;
+    const delivery = isFastDelivery ? 'fast' : 'normal';
+    Alert.alert('Notification', 'Are you sure you want to submit your order?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Submit',
+        onPress: () => {
+          createInvoice(
+            filter,
+            totalPrice,
+            currentPayment.type,
+            shippingAddress,
+            delivery,
+          )
+            .then(res => {
+              if (res.status === 201) {
+                navigatePush('DonePurchase');
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        },
+      },
+    ]);
   };
   useEffect(() => {
     const unsub = props.navigation.addListener('focus', () => {
@@ -107,6 +133,8 @@ const CheckoutScreen = (props: Props) => {
             image: res.image,
             // @ts-ignore
             cardNumber: res.cartNumber,
+            // @ts-ignore
+            type: res.type,
           });
         })
         .catch(e => {
@@ -308,5 +336,5 @@ const CheckoutScreen = (props: Props) => {
     </Container>
   );
 };
-
+// @ts-ignore
 export default CheckoutScreen;

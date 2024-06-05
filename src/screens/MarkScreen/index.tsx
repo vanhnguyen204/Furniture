@@ -4,15 +4,13 @@ import Header from '../../components/Header.tsx';
 import Box from '../../components/Box.tsx';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
-
 import {TextInput} from 'react-native';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import ListFavorites from './components/ListFavorites.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
 import {fetchFavoriteProductsByUser} from '../../services/api/product.ts';
-import { navigatePush } from "../../utils/navigationUtils.ts";
-import { PageName } from "../../config/pageName.ts";
+import {navigatePush} from '../../utils/navigationUtils.ts';
 
 const MarkScreen = () => {
   const {myFavorites, setMyFavorites} = useUserInformation();

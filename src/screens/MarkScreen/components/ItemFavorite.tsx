@@ -6,7 +6,11 @@ import ImageComponent from '../../../components/ImageComponent.tsx';
 import {imageUrl} from '../../../utils/ip.ts';
 import ButtonComponent from '../../../components/ButtonComponent.tsx';
 import {Alert} from 'react-native';
-import {checkVarProductInCart} from '../../../services/api/cart.ts';
+import {
+  addProductToCart,
+  checkVarProductInCart,
+} from '../../../services/api/cart.ts';
+import {navigatePush} from '../../../utils/navigationUtils.ts';
 interface ItemFavoriteProps {
   item: any;
   index: number;
@@ -23,6 +27,27 @@ const ItemFavorite = (props: ItemFavoriteProps) => {
         console.log(e);
       });
   }, [item._id]);
+  const onBagPress = () => {
+    addProductToCart(item._id, 1)
+      .then(res => {
+        if (res.status === 201) {
+          Alert.alert('Thông báo', 'Đã thêm sản phẩm vào giỏ hàng.');
+          navigatePush('Cart');
+          return;
+        }
+        if (res.status === 200) {
+          Alert.alert(
+            'Thông báo',
+            'Đã tăng số lượng của sản phẩm trong giỏ hàng.',
+          );
+          navigatePush('Cart');
+          return;
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
   return (
     <Box padding={10}>
       <Box flex={1} flexDirection={'row'}>
@@ -75,17 +100,18 @@ const ItemFavorite = (props: ItemFavoriteProps) => {
             flexDirection={'row'}
             justifyContent={'flex-end'}
             paddingHorizontal={10}>
-            <Box
+            <ButtonComponent
+              onPress={onBagPress}
               padding={5}
-              backgroundColor={appColors.grays.gray300}
-              radius={10}>
+              borderRadius={10}
+              backgroundColor={appColors.grays.gray300}>
               <ImageComponent
                 tintColor={appColors.black900}
                 src={require('../../../assets/icons/shopping_bag.png')}
                 width={20}
                 height={20}
               />
-            </Box>
+            </ButtonComponent>
           </Box>
         </Box>
       </Box>
