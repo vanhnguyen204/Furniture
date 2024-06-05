@@ -18,9 +18,11 @@ const ProfileScreen = () => {
   const profileTypes = [
     {
       id: 1,
-      name: 'My orders',
-      value: 'View my orders',
-      onPress: () => {},
+      name: 'History purchase',
+      value: 'View my ordered',
+      onPress: () => {
+        navigatePush('HistoryPurchase');
+      },
     },
     {
       id: 2,

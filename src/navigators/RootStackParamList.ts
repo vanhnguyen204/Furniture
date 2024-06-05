@@ -15,4 +15,5 @@ export type RootStackParamList = {
   MyProducts: undefined;
   ManageMyProducts: {isCreate: boolean; item?: Product};
   DonePurchase: undefined;
+  HistoryPurchase: undefined;
 };

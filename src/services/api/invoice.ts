@@ -21,3 +21,5 @@ export const createInvoice = (
     shippingAddress,
     delivery,
   });
+
+export const getMyInvoice = () => request(endPoint().getMyInvoice, Method.GET);

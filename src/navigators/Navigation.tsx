@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import WelcomeScreen from '../screens/WelcomeScreen';
+
 import {screenOptions} from '../utils/navigationUtils.ts';
 import {LoginScreen} from '../screens/Auth/LoginScreen.tsx';
 import SignUpScreen from '../screens/Auth/SignUpScreen.tsx';
@@ -15,6 +15,9 @@ import PaymentHandleScreen from '../screens/PaymentHandle';
 import MyProducts from '../screens/MyProducts';
 import ManageMyProducts from '../screens/ManageMyProducts';
 import DonePurchase from '../screens/DonePurchase/index.tsx';
+import HistoryPurchase from '../screens/HistoryPurchase/index.tsx';
+import WelcomeScreen from '../screens/WelcomeScreen';
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
   return (
@@ -38,6 +41,7 @@ const Navigation = () => {
       <Stack.Screen name={'MyProducts'} component={MyProducts} />
       <Stack.Screen name={'ManageMyProducts'} component={ManageMyProducts} />
       <Stack.Screen name={'DonePurchase'} component={DonePurchase} />
+      <Stack.Screen name={'HistoryPurchase'} component={HistoryPurchase} />
     </Stack.Navigator>
   );
 };
