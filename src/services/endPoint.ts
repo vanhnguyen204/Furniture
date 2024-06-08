@@ -35,7 +35,7 @@ export default () => {
     getMyPayment: `${baseURL}/api/payment/my-payment`,
     createPayment: `${baseURL}/api/payment/`,
     removePayment: `${baseURL}/api/payment/`,
-    activePayment: `${baseURL}/api/payment/active`,
+    activePayment: `${baseURL}/api/payment/active/`,
     getMySelectedPayment: `${baseURL}/api/payment/my-selected-payment`,
     //search
     searchProduct: `${baseURL}/api/product/search`,
@@ -43,6 +43,11 @@ export default () => {
     //invoice
     createInvoice: `${baseURL}/api/invoice/`,
     getMyInvoice: `${baseURL}/api/invoice/`,
-    getInvoiceDetails: `${baseURL}/api/invoice/details`,
+    getInvoiceDetails: `${baseURL}/api/invoice/details/`,
+    //review
+    createReview: `${baseURL}/api/review/`,
+    getMyReview: `${baseURL}/api/review/`,
+    deleteReview: `${baseURL}/api/review/`,
+    reviewed: `${baseURL}/api/review/`,
   };
 };

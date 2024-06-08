@@ -2,6 +2,7 @@ export const appColors = {
   black: '#000',
   black900: '#212121',
   white: '#fff',
+  overlay: 'rgb(240, 240, 240, 0.5)',
   backgroundApp: '#000',
   gray: 'rgba(255,255,255,0.5)',
   red: '#D32F2F',

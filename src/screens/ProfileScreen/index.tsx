@@ -43,8 +43,10 @@ const ProfileScreen = () => {
     {
       id: 4,
       name: 'My Reviews',
-      value: `Reviews for ${myReviews.length} items`,
-      onPress: () => {},
+      value: 'Go to reviews',
+      onPress: () => {
+        navigatePush('MyReviews');
+      },
     },
     {
       id: 5,

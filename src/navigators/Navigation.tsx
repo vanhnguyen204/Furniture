@@ -19,6 +19,7 @@ import DonePurchase from '../screens/DonePurchase/index.tsx';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import HistoryPurchase from '../screens/HistoryPurchase';
 import InvoiceDetails from '../screens/InvoiceDetails';
+import MyReview from '../screens/MyReview';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -45,6 +46,7 @@ const Navigation = () => {
       <Stack.Screen name={'DonePurchase'} component={DonePurchase} />
       <Stack.Screen name={'HistoryPurchase'} component={HistoryPurchase} />
       <Stack.Screen name={'InvoiceDetails'} component={InvoiceDetails} />
+      <Stack.Screen name={'MyReviews'} component={MyReview} />
     </Stack.Navigator>
   );
 };

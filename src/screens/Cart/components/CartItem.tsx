@@ -67,13 +67,10 @@ const CartItem = (props: ItemProps) => {
                       text: 'Xoá',
                       onPress: () => {
                         removeFromCart(item?._id)
-                          .then(res => {
-                            console.log(res);
+                          .then(() => {
                             remove(index);
                           })
-                          .catch(e => {
-                            console.log(e);
-                          });
+                          .catch(() => {});
                       },
                     },
                   ],

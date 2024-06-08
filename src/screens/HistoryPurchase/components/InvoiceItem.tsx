@@ -5,41 +5,13 @@ import TextComponent from '../../../components/TextComponent.tsx';
 import {appColors} from '../../../assets/colors/appColors.ts';
 import ButtonComponent from '../../../components/ButtonComponent.tsx';
 import {navigatePush} from '../../../utils/navigationUtils.ts';
+import {calculateTimeDifference} from '../../../utils/DateTime.ts';
 interface InvoiceItemProps {
   item: Invoice;
 }
 const InvoiceItem = (props: InvoiceItemProps) => {
   const {item} = props;
-  const calculateTimeDifference = useCallback(
-    (previousTime: string): string => {
-      // Tạo đối tượng Date cho thời điểm trước đó
-      const previous: Date = new Date(previousTime);
 
-      // Lấy thời gian hiện tại
-      const currentTime: Date = new Date();
-
-      // Tính chênh lệch thời gian tính bằng mili giây
-      const diffMs: number = currentTime.getTime() - previous.getTime();
-
-      // Chuyển đổi mili giây thành phút và giờ
-      const diffMinutes: number = Math.floor(diffMs / 60000); // 1 phút = 60000 mili giây
-      const diffHours: number = Math.floor(diffMs / 3600000); // 1 giờ = 3600000 mili giây
-      const diffDays: number = Math.floor(diffMs / 86400000);
-      // Kiểm tra nếu thời gian chênh lệch nhỏ hơn 1 giờ
-      if (diffDays < 1) {
-        if (diffMinutes < 1) {
-          return 'now';
-        } else if (diffHours < 1) {
-          return `${diffMinutes}m ago`;
-        } else {
-          return `${diffHours}h ago`;
-        }
-      } else {
-        return previousTime;
-      }
-    },
-    [],
-  );
   return (
     <Box
       marginHorizontal={20}
@@ -47,12 +19,13 @@ const InvoiceItem = (props: InvoiceItemProps) => {
       backgroundColor={appColors.white}
       padding={10}
       radius={10}>
-      <Box flexDirection={'row'} justifyContent={'space-between'}>
+      <Box>
         <TextComponent
           value={`Order No: ${item._id}`}
           color={appColors.black900}
         />
         <TextComponent
+          marginTop={5}
           value={calculateTimeDifference(item.dateExport)}
           color={appColors.blue500}
         />

@@ -10,6 +10,7 @@ import ItemSearch from '../screens/HomeScreen/components/ItemSearch.tsx';
 interface ModalSearchProps {
   visible: boolean;
   onClose: () => void;
+
 }
 const ModalSearch = (props: ModalSearchProps) => {
   const {visible, onClose} = props;

@@ -199,6 +199,7 @@ const ProductDetailsScreen = (props: Props) => {
         <TextComponent
           fontSize={14}
           lineHeight={19}
+          maxLine={5}
           fontWeight={'300'}
           value={item?.description}
           color={appColors.grays.gray600}

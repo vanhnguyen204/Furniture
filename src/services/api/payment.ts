@@ -16,7 +16,7 @@ export const fetchMyPayment = () =>
   request(endPoint().getMyPayment, Method.GET);
 
 export const activePayment = (id: string) =>
-  request(endPoint().activePayment, Method.POST, {paymentId: id});
+  request(endPoint().activePayment + id, Method.POST);
 
 export const removePayment = (id: string) =>
   request(endPoint().removePayment, Method.DELETE, {cartId: id});

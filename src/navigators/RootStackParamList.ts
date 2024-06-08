@@ -18,4 +18,5 @@ export type RootStackParamList = {
   DonePurchase: undefined;
   HistoryPurchase: undefined;
   InvoiceDetails: {invoice: Invoice};
+  MyReviews: undefined;
 };

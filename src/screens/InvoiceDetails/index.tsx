@@ -12,6 +12,7 @@ import {appColors} from '../../assets/colors/appColors.ts';
 import TextComponent from '../../components/TextComponent.tsx';
 import Product from '../../models/Product.ts';
 import InvoiceDetailsItem from './components/InvoiceDetailsItem.tsx';
+import ModalReview from './components/ModalReview.tsx';
 type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'InvoiceDetails'>;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,8 +26,10 @@ type Props = {
 const InvoiceDetails = (props: Props) => {
   const {route, navigation} = props;
   const {invoice} = route.params;
+  const [modalReviewVisible, setModalReviewVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [productSelected, setProductSelected] = useState<Product>();
   const getMyInvoiceDetails = useCallback(() => {
     setIsLoading(true);
     getInvoiceDetails(invoice._id)
@@ -40,11 +43,19 @@ const InvoiceDetails = (props: Props) => {
         console.log(e);
       });
   }, [invoice._id]);
+  const toggleModalReview = () => {
+    setModalReviewVisible(prevState => !prevState);
+  };
   useEffect(() => {
     getMyInvoiceDetails();
   }, [getMyInvoiceDetails]);
   return (
     <Container>
+      <ModalReview
+        product={productSelected}
+        visible={modalReviewVisible}
+        onClose={toggleModalReview}
+      />
       <Header
         iconLeft={require('../../assets/icons/left.png')}
         sizeIconLeft={30}
@@ -62,7 +73,13 @@ const InvoiceDetails = (props: Props) => {
 
       <FlatList
         data={products}
-        renderItem={({item}) => <InvoiceDetailsItem item={item} />}
+        renderItem={({item}) => (
+          <InvoiceDetailsItem
+            setImageSelected={setProductSelected}
+            item={item}
+            toggleModalReview={toggleModalReview}
+          />
+        )}
       />
     </Container>
   );

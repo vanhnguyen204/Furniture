@@ -19,13 +19,12 @@ const Cart = () => {
         return setListCart(res);
       })
       .catch(e => {
-        console.log(e);
+        console.log('Error get my cart');
       });
   }, []);
   const calculateTotalPrice = useMemo(() => {
     let sum = 0;
     listCart.map(item => {
-      console.log(item);
       // @ts-ignore
       return (sum += item?.price * item?.quantity);
     });
@@ -53,7 +52,6 @@ const Cart = () => {
           // @ts-ignore
           if (item.quantity > 1) {
             // @ts-ignore
-
             item.quantity = --item.quantity;
           } else {
             // @ts-ignore
