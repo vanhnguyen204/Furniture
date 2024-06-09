@@ -29,3 +29,6 @@ export const getInvoiceDetails = (invoiceId: string) =>
 
 export const checkReviewed = (productId: string) =>
   request(endPoint().reviewed + productId, Method.GET);
+
+export const getStatistical = (time: string) =>
+  request(endPoint().getStatistic + time, Method.GET);

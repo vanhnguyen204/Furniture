@@ -15,3 +15,6 @@ export const createReview = (
     rate,
     comment,
   });
+
+export const countReview = (productId: string) =>
+  request(endPoint().countReviews + productId, Method.GET);

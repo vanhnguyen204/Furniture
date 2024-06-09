@@ -13,8 +13,7 @@ import {ACCESS_TOKEN} from '../../constants/AsyncStorage.ts';
 import {Alert} from 'react-native';
 
 const ProfileScreen = () => {
-  const {infor, myOrders, myPayments, myAddresses, myReviews} =
-    useUserInformation();
+  const {infor, myAddresses} = useUserInformation();
   const profileTypes = [
     {
       id: 1,
@@ -27,7 +26,7 @@ const ProfileScreen = () => {
     {
       id: 2,
       name: 'Shipping Addresses',
-      value: `${myAddresses.length} addresses`,
+      value: 'See addresses details',
       onPress: () => {
         navigatePush('ShippingAddress');
       },
@@ -59,8 +58,10 @@ const ProfileScreen = () => {
     {
       id: 6,
       name: 'Setting',
-      value: 'Password, FAQ, Contact',
-      onPress: () => {},
+      value: 'Password, Information',
+      onPress: () => {
+        navigatePush('Setting');
+      },
     },
   ];
   return (

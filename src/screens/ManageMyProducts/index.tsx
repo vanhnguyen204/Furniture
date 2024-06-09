@@ -21,7 +21,9 @@ import {
 } from '../../services/api/product.ts';
 import {Alert} from 'react-native';
 import {useMyProducts} from '../../hooks/useMyProducts.ts';
-import {imageUrl} from '../../utils/ip.ts';
+import {imageUrl, socketIoAddress} from '../../utils/ip.ts';
+import {io} from 'socket.io-client';
+const socket = io(socketIoAddress);
 type CheckoutScreenRouteProp = RouteProp<
   RootStackParamList,
   'ManageMyProducts'
@@ -43,6 +45,7 @@ type FormValues = {
 };
 const ManageMyProducts = (props: Props) => {
   const {isCreate, item} = props.route.params;
+
   const [image, setImage] = useState({
     uri: '',
     type: '',
@@ -95,7 +98,7 @@ const ManageMyProducts = (props: Props) => {
     {label: 'Bed', value: 'bed'},
     {label: 'Lamp', value: 'lamp'},
   ];
-  // useEffect(() => {}, []);
+
   const [valueType, setValue] = useState(type[0].value);
   const [openType, setOpenType] = useState(false);
   const onSubmit: SubmitHandler<FormValues> = data => {

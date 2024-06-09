@@ -16,7 +16,7 @@ interface ItemShoppingAddressProps {
   onUpdate: (item: Address) => void;
   onRemove: (id: string) => void;
 }
-const ItemShoppingAddress = (props: ItemShoppingAddressProps) => {
+const ItemShippingAddress = (props: ItemShoppingAddressProps) => {
   const {item, index, onUpdate, onRemove} = props;
   const {setMyAddress, myAddresses} = useUserInformation();
   const handleUpdateStatus = async (value: boolean) => {
@@ -118,4 +118,4 @@ const ItemShoppingAddress = (props: ItemShoppingAddressProps) => {
   );
 };
 
-export default memo(ItemShoppingAddress);
+export default memo(ItemShippingAddress);

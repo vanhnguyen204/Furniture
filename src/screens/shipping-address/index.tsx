@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Header from '../../components/Header.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
@@ -9,11 +9,12 @@ import ButtonComponent from '../../components/ButtonComponent.tsx';
 import FormShippingAddress from '../../components/FormShippingAddress.tsx';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import {Alert, FlatList} from 'react-native';
-import ItemShoppingAddress from './components/ItemShoppingAddress.tsx';
+import ItemShoppingAddress from './components/ItemShippingAddress.tsx';
 import Address from '../../models/Address.ts';
 import Spacer from '../../components/Spacer.tsx';
 import {
   createShippingAddress,
+  getMyShippingAddress,
   removeMyShippingAddress,
 } from '../../services/api/shippingAddress.ts';
 
@@ -56,6 +57,12 @@ const ShippingAddress = () => {
     },
     [toggleModal],
   );
+  useEffect(() => {
+    getMyShippingAddress().then(res => {
+      // @ts-ignore
+      setMyAddress(res);
+    });
+  }, [setMyAddress]);
   return (
     <Container justifyContent={'space-between'} alignItems={'flex-end'}>
       <FormShippingAddress

@@ -4,8 +4,11 @@ export default () => {
   const baseURL = ProdConfig.BASE_URL;
   return {
     baseURL: baseURL,
+    //authentication
     register: `${baseURL}/api/auth/register`,
     login: `${baseURL}/api/auth/login`,
+    getInfor: `${baseURL}/api/auth/infor`,
+    updateInfor: `${baseURL}/api/auth/user`,
     //product
     listProductGlobal: `${baseURL}/api/product/`,
     getMyProducts: `${baseURL}/api/product/my-product`,
@@ -44,10 +47,12 @@ export default () => {
     createInvoice: `${baseURL}/api/invoice/`,
     getMyInvoice: `${baseURL}/api/invoice/`,
     getInvoiceDetails: `${baseURL}/api/invoice/details/`,
+    getStatistic: `${baseURL}/api/invoice/statistical/`,
     //review
     createReview: `${baseURL}/api/review/`,
     getMyReview: `${baseURL}/api/review/`,
     deleteReview: `${baseURL}/api/review/`,
     reviewed: `${baseURL}/api/review/`,
+    countReviews: `${baseURL}/api/review/count/`,
   };
 };

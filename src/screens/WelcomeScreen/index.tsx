@@ -18,7 +18,6 @@ import {getMyShippingAddress} from '../../services/api/shippingAddress.ts';
 
 const WelcomeScreen = () => {
   const {setProducts} = useStoreGlobal();
-  const {setMyFavorites, setMyAddress} = useUserInformation();
   const [isLoading, setIsLoading] = useState(false);
   const handleGetstarted = useCallback(async () => {
     setIsLoading(true);
@@ -27,11 +26,6 @@ const WelcomeScreen = () => {
       if (checkToken === null) {
         navigateReplace('Login');
       } else {
-        const fetchFavorite = await fetchFavoriteProductsByUser();
-        const fetchShippingAddress = await getMyShippingAddress();
-        // @ts-ignore
-        setMyAddress(fetchShippingAddress);
-        setMyFavorites(fetchFavorite);
         navigateReplace('BottomTab');
       }
 
@@ -44,7 +38,7 @@ const WelcomeScreen = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [setMyAddress, setMyFavorites, setProducts]);
+  }, [setProducts]);
   return (
     <ImageBackground
       source={require('../../assets/images/backgroundWelcome.png')}

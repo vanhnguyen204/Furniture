@@ -20,6 +20,7 @@ import {addProductToCart} from '../../services/api/cart.ts';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {countReview} from '../../services/api/review.ts';
 
 type CheckoutScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -37,6 +38,10 @@ type Props = {
 const ProductDetailsScreen = (props: Props) => {
   const {item} = props.route.params;
   const {setMyFavorites, myFavorites} = useUserInformation();
+  const [rating, setRating] = useState({
+    averageRating: 0,
+    reviews: 0,
+  });
   const [isProductFavorite, setIsProductFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const isFavorite = useCallback(async () => {
@@ -63,11 +68,6 @@ const ProductDetailsScreen = (props: Props) => {
   }, [item._id]);
   const onPressMark = useCallback(async () => {
     try {
-      const accessUserId = await AsyncStorage.getItem(ACCESS_USER_ID);
-      if (accessUserId === null) {
-        console.log('User id is null');
-        return;
-      }
       if (isProductFavorite) {
         await deleteFavorite(item._id);
         setIsProductFavorite(false);
@@ -77,7 +77,7 @@ const ProductDetailsScreen = (props: Props) => {
         });
         setMyFavorites(filterFavorite);
       } else {
-        await createFavorite(item._id, accessUserId);
+        await createFavorite(item._id);
         setIsProductFavorite(true);
         setMyFavorites(myFavorites, item);
       }
@@ -88,6 +88,16 @@ const ProductDetailsScreen = (props: Props) => {
   useEffect(() => {
     isFavorite();
   }, [isFavorite]);
+  useEffect(() => {
+    countReview(item._id)
+      .then(res => {
+        // @ts-ignore
+        setRating(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [item._id]);
   return (
     <Container>
       <Box
@@ -126,7 +136,7 @@ const ProductDetailsScreen = (props: Props) => {
           </ButtonComponent>
         </View>
       </Box>
-      <Box padding={20}>
+      <Box paddingHorizontal={20}>
         <TextComponent
           value={item?.name}
           color={appColors.black900}
@@ -136,7 +146,7 @@ const ProductDetailsScreen = (props: Props) => {
           fontFamily={'Dancing Script'}
         />
         <Box
-          marginVertical={10}
+          marginVertical={5}
           flexDirection={'row'}
           justifyContent={'space-between'}>
           <TextComponent
@@ -196,6 +206,30 @@ const ProductDetailsScreen = (props: Props) => {
             </ButtonComponent>
           </Box>
         </Box>
+        <ButtonComponent
+          padding={0}
+          onPress={() => {}}
+          flexDirection={'row'}
+          alignItems={'center'}
+          marginBottom={10}>
+          <ImageComponent
+            src={require('../../assets/icons/star.png')}
+            width={20}
+            height={20}
+          />
+          <TextComponent
+            marginLeft={10}
+            fontSize={16}
+            value={rating.averageRating.toString()}
+            color={appColors.black900}
+          />
+          <TextComponent
+            marginLeft={10}
+            fontSize={16}
+            value={`(${rating.reviews} reviews)`}
+            color={appColors.black900}
+          />
+        </ButtonComponent>
         <TextComponent
           fontSize={14}
           lineHeight={19}

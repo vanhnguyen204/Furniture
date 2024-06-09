@@ -12,6 +12,7 @@ import MyProductItem from './components/MyProductItem.tsx';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import TextComponent from '../../components/TextComponent.tsx';
 type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'MyProducts'>;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -56,12 +57,15 @@ const MyProducts = (props: Props) => {
             position={'absolute'}
             end={20}
             name={'User manual'}
-            onPress={() => {}}
+            onPress={() => {
+              navigatePush('Statistical');
+            }}
             padding={0}>
             <ImageComponent
-              src={require('../../assets/icons/icon_what.png')}
-              width={23}
-              height={23}
+              alignSelf={'center'}
+              src={require('../../assets/icons/statistics.png')}
+              width={25}
+              height={25}
             />
           </ButtonComponent>
         </Box>

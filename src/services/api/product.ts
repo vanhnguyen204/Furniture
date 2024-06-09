@@ -16,8 +16,8 @@ export const productDetails = (id: any) =>
   request(endPoint().productDetails, Method.GET, {id: id});
 export const listProductOfUser = (userId: any) =>
   request(endPoint().createProduct, Method.GET, {userId: userId});
-export const createFavorite = (productId: string, userId: string) =>
-  request(endPoint().createFavorite, Method.POST, {productId, userId});
+export const createFavorite = (productId: string) =>
+  request(endPoint().createFavorite, Method.POST, {productId});
 export const deleteFavorite = (productId: string) =>
   request(endPoint().deleteFavorite, Method.POST, {productId});
 export const checkIsFavorite = (productId: string) =>

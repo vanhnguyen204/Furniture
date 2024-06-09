@@ -11,7 +11,6 @@ export const createPayment = (payment: Payment) =>
     cartHolderName: payment.cartHolderName,
     type: payment.type,
   });
-
 export const fetchMyPayment = () =>
   request(endPoint().getMyPayment, Method.GET);
 
@@ -19,7 +18,7 @@ export const activePayment = (id: string) =>
   request(endPoint().activePayment + id, Method.POST);
 
 export const removePayment = (id: string) =>
-  request(endPoint().removePayment, Method.DELETE, {cartId: id});
+  request(endPoint().removePayment + id, Method.DELETE);
 
 export const getMySelectedPayment = () =>
   request(endPoint().getMySelectedPayment, Method.POST);

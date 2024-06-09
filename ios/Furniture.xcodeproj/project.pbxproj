@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00A0FD8118C04F2BA13CD589 /* index.ts in Resources */ = {isa = PBXBuildFile; fileRef = 1C9BF0095EE84B51BA265A6D /* index.ts */; };
+		00A0FD8118C04F2BA13CD589 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 1C9BF0095EE84B51BA265A6D /* index.js */; };
 		00E356F31AD99517003FC87E /* FurnitureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FurnitureTests.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-Furniture.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Furniture.a */; };
 		0EE6662C86B8417AA0D82B72 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD4E8858CDC14EDF84CE2DB7 /* Ionicons.ttf */; };
@@ -67,7 +67,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Furniture/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Furniture/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Furniture-FurnitureTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Furniture-FurnitureTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1C9BF0095EE84B51BA265A6D /* index.ts */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = index.ts; path = ../src/assets/fonts/index.ts; sourceTree = "<group>"; };
+		1C9BF0095EE84B51BA265A6D /* index.js */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = index.js; path = ../src/assets/fonts/index.js; sourceTree = "<group>"; };
 		3195BDAD85134AA38C007110 /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Solid.ttf; path = ../src/assets/fonts/FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Furniture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Furniture.debug.xcconfig"; path = "Target Support Files/Pods-Furniture/Pods-Furniture.debug.xcconfig"; sourceTree = "<group>"; };
 		3C77FC6D434C49579F47BBB3 /* Jaro.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Jaro.ttf; path = ../src/assets/fonts/Jaro.ttf; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				FE6A0D62CAC944EB9D7D958B /* Octicons.ttf */,
 				58F7C5EC73464C1E90F188B6 /* SimpleLineIcons.ttf */,
 				81AC9B8B9C854BCE814E4CB4 /* Zocial.ttf */,
-				1C9BF0095EE84B51BA265A6D /* index.ts */,
+				1C9BF0095EE84B51BA265A6D /* index.js */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -352,7 +352,7 @@
 				BBBC490236334248BBD66FFB /* Octicons.ttf in Resources */,
 				9B0BD6F3C06B495F85477DCC /* SimpleLineIcons.ttf in Resources */,
 				6E8CA81DEA114A0AB42156E0 /* Zocial.ttf in Resources */,
-				00A0FD8118C04F2BA13CD589 /* index.ts in Resources */,
+				00A0FD8118C04F2BA13CD589 /* index.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

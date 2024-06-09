@@ -20,6 +20,9 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import HistoryPurchase from '../screens/HistoryPurchase';
 import InvoiceDetails from '../screens/InvoiceDetails';
 import MyReview from '../screens/MyReview';
+import Statistical from '../screens/Statistical';
+import Setting from '../screens/setting';
+import RatingDetail from '../screens/RatingDetail';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -47,6 +50,9 @@ const Navigation = () => {
       <Stack.Screen name={'HistoryPurchase'} component={HistoryPurchase} />
       <Stack.Screen name={'InvoiceDetails'} component={InvoiceDetails} />
       <Stack.Screen name={'MyReviews'} component={MyReview} />
+      <Stack.Screen name={'Statistical'} component={Statistical} />
+      <Stack.Screen name={'Setting'} component={Setting} />
+      <Stack.Screen name={'RatingDetails'} component={RatingDetail} />
     </Stack.Navigator>
   );
 };

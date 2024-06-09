@@ -25,7 +25,7 @@ import {useUserInformation} from '../../hooks/useUserInformation.ts';
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const {setProducts} = useStoreGlobal();
-  const {setMyFavorites} = useUserInformation();
+  const {setMyFavorites, setInfor} = useUserInformation();
   const [isSecurePass, setIsSecurePass] = useState(true);
   const {
     email,
@@ -49,6 +49,7 @@ export const LoginScreen = () => {
     if (email.trim().length !== 0 || passWord.trim().length !== 0) {
       login(email, passWord)
         .then(async res => {
+          console.log(res);
           // @ts-ignore
           if (res?.error) {
             // @ts-ignore
@@ -60,15 +61,11 @@ export const LoginScreen = () => {
             const {token, ...rest} = res;
             await AsyncStorage.setItem(ACCESS_TOKEN, token);
             // @ts-ignore
-            await AsyncStorage.setItem(ACCESS_USER_ID, rest.user._id);
+
             const fetchDataRes = await fetchAllData();
             // @ts-ignore
             setProducts(fetchDataRes);
-            const fetchFavorite = await fetchFavoriteProductsByUser(
-              // @ts-ignore
-              rest.user._id,
-            );
-            setMyFavorites(fetchFavorite);
+
             navigateReplace('BottomTab');
             setErrorEmail('');
             setErrorPassword('');
@@ -78,8 +75,7 @@ export const LoginScreen = () => {
             console.log(e);
           }
         })
-        .catch(e => {
-          console.log(e);
+        .catch(() => {
           Alert.alert(
             'Mất kết nối',
             'Vui lòng kiểm tra đường truyền và thử lại.',

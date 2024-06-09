@@ -10,3 +10,7 @@ export const signup = (email: string, pass: any, name: string) =>
     passWord: pass,
     name: name,
   });
+
+export const getInfor = () => request(endPoint().getInfor, Method.GET);
+export const updateInfor = (name: string) =>
+  request(endPoint().updateInfor, Method.PATCH, {name});

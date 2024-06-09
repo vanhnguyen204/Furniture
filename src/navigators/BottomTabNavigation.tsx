@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {PageName} from '../config/pageName.ts';
 import HomeScreen from '../screens/HomeScreen';
@@ -9,8 +9,25 @@ import {iconBottomTab} from '../styles/iconBottomTab.ts';
 import MarkScreen from '../screens/MarkScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import {useNotification} from '../hooks/useNotification.ts';
+import {socket} from '../services/socket.ts';
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
+  const {notificationSize} = useNotification();
+  useEffect(() => {
+    console.log('ok la');
+    socket.connect();
+    socket.on('connect', () => {
+      console.log('User connected');
+    });
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+    // Clean up the effect
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -74,6 +91,7 @@ const BottomTabNavigation = () => {
               />
             );
           },
+          tabBarBadge: notificationSize === 0 ? undefined : notificationSize,
         }}
       />
       <Tab.Screen

@@ -51,23 +51,25 @@ const InvoiceDetailsItem = (props: InvoiceItemDetailsProps) => {
           backgroundColor={'#f2f2f2'}
           flexDirection={'row'}
           onPress={() => {
-            checkReviewed(item._id ?? '')
-              .then(res => {
-                console.log(res);
-                // @ts-ignore
-                if (!res.isReview) {
-                  Alert.alert(
-                    'Notification',
-                    'You have already rated this product.',
-                  );
-                } else {
-                  setImageSelected(item);
-                  toggleModalReview();
-                }
-              })
-              .catch(e => {
-                console.log(e);
-              });
+            // check reviewed
+            // checkReviewed(item._id ?? '')
+            //   .then(res => {
+            //     console.log(res);
+            //     // @ts-ignore
+            //     if (!res.isReview) {
+            //       Alert.alert(
+            //         'Notification',
+            //         'You have already rated this product.',
+            //       );
+            //     } else {
+            //
+            //     }
+            //   })
+            //   .catch(e => {
+            //     console.log(e);
+            //   });
+            setImageSelected(item);
+            toggleModalReview();
           }}
           position={'absolute'}
           name={'Rating & reviews'}

@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
 import {fetchFavoriteProductsByUser} from '../../services/api/product.ts';
 import {navigatePush} from '../../utils/navigationUtils.ts';
+import TextComponent from '../../components/TextComponent.tsx';
 
 const MarkScreen = () => {
   const {myFavorites, setMyFavorites} = useUserInformation();
@@ -25,16 +26,20 @@ const MarkScreen = () => {
   const onRefresh = useCallback(async () => {
     try {
       setRefreshing(true);
-      const getUserId = await AsyncStorage.getItem(ACCESS_USER_ID);
-      if (getUserId !== null) {
-        const favoriteRes = await fetchFavoriteProductsByUser();
-        setMyFavorites(favoriteRes);
-      }
+      const favoriteRes = await fetchFavoriteProductsByUser();
+      setMyFavorites(favoriteRes);
     } catch (e) {
       console.log(e);
     } finally {
       setRefreshing(false);
     }
+  }, [setMyFavorites]);
+  useEffect(() => {
+    fetchFavoriteProductsByUser()
+      .then(res => {
+        setMyFavorites(res);
+      })
+      .catch(() => {});
   }, [setMyFavorites]);
   return (
     <Container>
@@ -66,11 +71,21 @@ const MarkScreen = () => {
           onRightPress={() => navigatePush('Cart')}
         />
       )}
-      <ListFavorites
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        data={myFavorites}
-      />
+      {myFavorites.length === 0 ? (
+        <Box flex={1}>
+          <TextComponent
+            alignSelf={'center'}
+            value={"You don't like any product"}
+            color={appColors.black900}
+          />
+        </Box>
+      ) : (
+        <ListFavorites
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          data={myFavorites}
+        />
+      )}
     </Container>
   );
 };
