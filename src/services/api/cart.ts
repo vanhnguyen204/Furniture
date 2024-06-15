@@ -9,4 +9,4 @@ export const addProductToCart = (productId: String, quantity: number) =>
   request(endPoint().addProductToCart, Method.POST, {productId, quantity});
 
 export const removeFromCart = (productId: string) =>
-  request(endPoint().removeFromCart, Method.DELETE, {productId});
+  request(endPoint().removeFromCart + productId, Method.DELETE);

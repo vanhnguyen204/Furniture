@@ -9,22 +9,22 @@ export const fetchMyProduct = () =>
 export const createProduct = (product: any) =>
   request(endPoint().createProduct, Method.POST, product);
 export const updateProduct = (product: any) =>
-  request(endPoint().updateProduct, Method.POST, product);
+  request(endPoint().updateProduct, Method.PUT, product);
 export const deleteProduct = (id: string) =>
-  request(endPoint().deleteProduct, Method.POST, {id: id});
-export const productDetails = (id: any) =>
-  request(endPoint().productDetails, Method.GET, {id: id});
-export const listProductOfUser = (userId: any) =>
-  request(endPoint().createProduct, Method.GET, {userId: userId});
+  request(endPoint().deleteProduct + id, Method.DELETE);
+export const productDetails = (id: string) =>
+  request(endPoint().productDetails + id, Method.GET);
+export const getProductsByCategory = (category: string) =>
+  request(endPoint().getProductsByCategory + category, Method.GET);
 export const createFavorite = (productId: string) =>
   request(endPoint().createFavorite, Method.POST, {productId});
 export const deleteFavorite = (productId: string) =>
-  request(endPoint().deleteFavorite, Method.POST, {productId});
+  request(endPoint().deleteFavorite + productId, Method.DELETE);
 export const checkIsFavorite = (productId: string) =>
-  request(endPoint().isFavorite, Method.POST, {productId});
+  request(endPoint().isFavorite + productId, Method.GET);
 
 export const fetchFavoriteProductsByUser = () =>
-  request(endPoint().favoriteProductsByUserId, Method.POST);
+  request(endPoint().favoriteOfUser, Method.GET);
 
 export const searchProduct = (name: string) =>
-  request(endPoint().searchProduct, Method.POST, {productName: name});
+  request(endPoint().searchProduct + name, Method.GET);

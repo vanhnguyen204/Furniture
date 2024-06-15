@@ -46,16 +46,38 @@ export const request = async (url: string, method: string, data?: any) => {
     throw error;
   }
 };
-export const uploadRequest = async (
+
+export const requestAxios = async <T>(
   url: string,
-  data: object,
-  authToken: any,
-) => {
+  method: string,
+  data?: any,
+): Promise<T> => {
   try {
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
+    const response = await axiosClient.request<T>({
+      url,
+      method,
+      data,
+      headers: {
+        Authorization: `Bear ${token}`,
+      },
+    });
+    if (response.data && (response.data as any).data) {
+      return (response.data as any).data;
+    }
+    return response.data;
+  } catch (error: any) {
+    handleLogError(error, url, method);
+    throw error;
+  }
+};
+export const uploadRequest = async (url: string, data: object) => {
+  try {
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN);
     const response = await axiosClient.post(url, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${authToken}`,
+        Authorization: `Bear ${token}`,
       },
     });
     return response.data;

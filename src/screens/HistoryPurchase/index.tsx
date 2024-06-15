@@ -1,32 +1,16 @@
-import {View, Text, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Container from '../../components/Container';
 import Header from '../../components/Header';
 import {appColors} from '../../assets/colors/appColors';
 import {getMyInvoice} from '../../services/api/invoice';
 import Invoice from '../../models/Invoice';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from '../../navigators/RootStackParamList.ts';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Box from '../../components/Box.tsx';
 import TextComponent from '../../components/TextComponent.tsx';
 import InvoiceItem from './components/InvoiceItem.tsx';
 import {goBackNavigation} from '../../utils/navigationUtils.ts';
 
-type CheckoutScreenRouteProp = RouteProp<
-  RootStackParamList,
-  'HistoryPurchase'
->;
-type CheckoutScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'HistoryPurchase'
->;
-
-type Props = {
-  route: CheckoutScreenRouteProp;
-  navigation: CheckoutScreenNavigationProp;
-};
-const HistoryPurchase = (props: Props) => {
+const HistoryPurchase = (props: {navigation: any}) => {
   const {navigation} = props;
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const getInvoice = () => {
@@ -51,7 +35,7 @@ const HistoryPurchase = (props: Props) => {
   return (
     <Container>
       <Header
-        iconLeft={require('../../assets/icons/left.png')}
+        iconLeft={undefined}
         sizeIconLeft={30}
         title="History purchase"
         colorTitle={appColors.black900}
@@ -62,19 +46,23 @@ const HistoryPurchase = (props: Props) => {
         }}
       />
 
-      {invoices.length === 0 && (
-        <Box flex={1}>
+      {invoices.length === 0 ? (
+        <Box flex={1} alignItems={'center'} justifyContent={'center'}>
           <TextComponent
+            alignSelf={'center'}
+            color={appColors.black900}
             value={
               'Purchase history is empty, you have not purchased any products.'
             }
           />
         </Box>
+      ) : (
+        <FlatList
+          keyExtractor={item => item._id}
+          data={invoices}
+          renderItem={({item}) => <InvoiceItem item={item} />}
+        />
       )}
-      <FlatList
-        data={invoices}
-        renderItem={({item, index}) => <InvoiceItem item={item} />}
-      />
     </Container>
   );
 };

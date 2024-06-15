@@ -18,6 +18,8 @@ import {imageUrl} from '../../utils/ip.ts';
 import CheckBox from '../../components/CheckBox.tsx';
 import {createInvoice} from '../../services';
 import {RequestInvoice} from '../../services/api/invoice.ts';
+import {useUserInformation} from '../../hooks/useUserInformation.ts';
+import Address from '../../models/Address.ts';
 
 type CheckoutScreenRouteProp = RouteProp<RootStackParamList, 'Checkout'>;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
@@ -31,16 +33,16 @@ type Props = {
 };
 const CheckoutScreen = (props: Props) => {
   const {totalPrice, products} = props.route.params;
-  console.log('List cart check out');
-  console.log(products);
-
+  const {myAddresses} = useUserInformation();
   const [isFastDelivery, setIsFastDelivery] = useState(true);
-  const [currenShippingAddress, setCurrenShippingAddress] = useState({
+  const [currenShippingAddress, setCurrenShippingAddress] = useState<Address>({
     recipient: '',
     addressDetail: '',
     district: '',
     city: '',
     country: '',
+    isSelected: false,
+    _id: '',
   });
   const [currentPayment, setCurrentPayment] = useState({
     image: '',
@@ -125,6 +127,11 @@ const CheckoutScreen = (props: Props) => {
         .catch(e => {
           console.log(e);
         });
+      const filterAddress: Address[] = myAddresses.filter(item => {
+        return item.isSelected;
+      });
+
+      setCurrenShippingAddress(filterAddress[0]);
       getMySelectedPayment()
         .then(res => {
           console.log(res);
@@ -145,7 +152,7 @@ const CheckoutScreen = (props: Props) => {
     return () => {
       unsub();
     };
-  }, [props.navigation]);
+  }, [myAddresses, props.navigation]);
   return (
     <Container justifyContent={'space-between'}>
       <Box>
@@ -184,7 +191,7 @@ const CheckoutScreen = (props: Props) => {
 
           <Box radius={5} marginBottom={30} backgroundColor={appColors.white}>
             <TextComponent
-              value={currenShippingAddress.recipient}
+              value={currenShippingAddress?.recipient}
               color={appColors.black900}
               fontSize={18}
               fontWeight={'700'}
@@ -204,13 +211,13 @@ const CheckoutScreen = (props: Props) => {
               marginBottom={15}
               color={appColors.grays.gray450}
               value={
-                currenShippingAddress.addressDetail +
+                currenShippingAddress?.addressDetail +
                 ', ' +
-                currenShippingAddress.district +
+                currenShippingAddress?.district +
                 ', ' +
-                currenShippingAddress.city +
+                currenShippingAddress?.city +
                 ', ' +
-                currenShippingAddress.country
+                currenShippingAddress?.country
               }
             />
           </Box>

@@ -18,3 +18,6 @@ export const createReview = (
 
 export const countReview = (productId: string) =>
   request(endPoint().countReviews + productId, Method.GET);
+
+export const detailReviewProduct = (productId: string) =>
+  request(endPoint().detailReviewProduct + productId, Method.GET);

@@ -23,6 +23,8 @@ import MyReview from '../screens/MyReview';
 import Statistical from '../screens/Statistical';
 import Setting from '../screens/setting';
 import RatingDetail from '../screens/RatingDetail';
+import ForgotPassword from '../screens/Auth/ForgotPassword.tsx';
+import ChangePass from '../screens/Auth/ChangePass.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Navigation = () => {
@@ -31,7 +33,9 @@ const Navigation = () => {
       <Stack.Screen name={'WelcomeScreen'} component={WelcomeScreen} />
       <Stack.Screen name={'Login'} component={LoginScreen} />
       <Stack.Screen name={'Register'} component={SignUpScreen} />
+      <Stack.Screen name={'ForgotPassword'} component={ForgotPassword} />
       <Stack.Screen name={'BottomTab'} component={BottomTabNavigation} />
+      <Stack.Screen name={'ChangePassword'} component={ChangePass} />
       <Stack.Screen
         name={'ProductDetailsScreen'}
         component={ProductDetailsScreen}
@@ -47,7 +51,6 @@ const Navigation = () => {
       <Stack.Screen name={'MyProducts'} component={MyProducts} />
       <Stack.Screen name={'ManageMyProducts'} component={ManageMyProducts} />
       <Stack.Screen name={'DonePurchase'} component={DonePurchase} />
-      <Stack.Screen name={'HistoryPurchase'} component={HistoryPurchase} />
       <Stack.Screen name={'InvoiceDetails'} component={InvoiceDetails} />
       <Stack.Screen name={'MyReviews'} component={MyReview} />
       <Stack.Screen name={'Statistical'} component={Statistical} />

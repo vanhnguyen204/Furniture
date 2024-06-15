@@ -11,23 +11,23 @@ import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {useNotification} from '../hooks/useNotification.ts';
 import {socket} from '../services/socket.ts';
+import HistoryPurchase from "../screens/HistoryPurchase";
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
-  const {notificationSize} = useNotification();
-  useEffect(() => {
-    console.log('ok la');
-    socket.connect();
-    socket.on('connect', () => {
-      console.log('User connected');
-    });
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
-    // Clean up the effect
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // const {notificationSize} = useNotification();
+  // useEffect(() => {
+  //   socket.connect();
+  //   socket.on('connect', () => {
+  //     console.log('User connected');
+  //   });
+  //   socket.on('disconnect', () => {
+  //     console.log('Disconnected from server');
+  //   });
+  //   // Clean up the effect
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -77,13 +77,13 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name={PageName.NotificationScreen}
-        component={NotificationScreen}
+        name={'HistoryPurchase'}
+        component={HistoryPurchase}
         options={{
           tabBarIcon: ({size, color}) => {
             return (
               <ImageComponent
-                src={iconBottomTab.iconNotification}
+                src={iconBottomTab.iconInvoice}
                 width={size}
                 height={size}
                 tintColor={color}
@@ -91,7 +91,6 @@ const BottomTabNavigation = () => {
               />
             );
           },
-          tabBarBadge: notificationSize === 0 ? undefined : notificationSize,
         }}
       />
       <Tab.Screen

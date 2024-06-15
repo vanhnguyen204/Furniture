@@ -12,12 +12,14 @@ import {
 } from '../../services/api/product.ts';
 import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ACCESS_TOKEN, ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
+import {ACCESS_TOKEN} from '../../constants/AsyncStorage.ts';
 import {useUserInformation} from '../../hooks/useUserInformation.ts';
-import {getMyShippingAddress} from '../../services/api/shippingAddress.ts';
+import {getUserInfor} from '../../services/api/auth.ts';
+import { User } from "../../models/User.ts";
 
 const WelcomeScreen = () => {
   const {setProducts} = useStoreGlobal();
+  const {setInfor} = useUserInformation();
   const [isLoading, setIsLoading] = useState(false);
   const handleGetstarted = useCallback(async () => {
     setIsLoading(true);
@@ -27,6 +29,13 @@ const WelcomeScreen = () => {
         navigateReplace('Login');
       } else {
         navigateReplace('BottomTab');
+        getUserInfor()
+          .then(res => {
+            setInfor(res);
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
 
       const fetchDataRes = await fetchAllData();

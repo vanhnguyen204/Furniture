@@ -5,7 +5,7 @@ import ImageComponent from '../../components/ImageComponent.tsx';
 import Box from '../../components/Box.tsx';
 import {appColors} from '../../assets/colors/appColors.ts';
 import ButtonComponent from '../../components/ButtonComponent.tsx';
-import {goBackNavigation} from '../../utils/navigationUtils.ts';
+import {goBackNavigation, navigatePush} from '../../utils/navigationUtils.ts';
 import {Alert, View} from 'react-native';
 import {imageUrl} from '../../utils/ip.ts';
 import {
@@ -28,7 +28,7 @@ type CheckoutScreenRouteProp = RouteProp<
 >;
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'Checkout'
+  'ProductDetailsScreen'
 >;
 
 type Props = {
@@ -46,14 +46,8 @@ const ProductDetailsScreen = (props: Props) => {
   const [quantity, setQuantity] = useState(1);
   const isFavorite = useCallback(async () => {
     try {
-      const accessUserId = await AsyncStorage.getItem(ACCESS_USER_ID);
-      if (accessUserId === null) {
-        console.log('User id is null');
-        return;
-      }
       checkIsFavorite(item._id)
         .then(res => {
-          console.log(res);
           // @ts-ignore
           if (res) {
             setIsProductFavorite(true);
@@ -208,7 +202,16 @@ const ProductDetailsScreen = (props: Props) => {
         </Box>
         <ButtonComponent
           padding={0}
-          onPress={() => {}}
+          onPress={() => {
+            navigatePush('RatingDetails', {
+              productId: item._id,
+              price: item.price,
+              image: item.image,
+              average: rating.averageRating,
+              reviews: rating.reviews,
+              name: item.name,
+            });
+          }}
           flexDirection={'row'}
           alignItems={'center'}
           marginBottom={10}>
@@ -220,7 +223,7 @@ const ProductDetailsScreen = (props: Props) => {
           <TextComponent
             marginLeft={10}
             fontSize={16}
-            value={rating.averageRating.toString()}
+            value={rating.averageRating.toFixed(1).toString()}
             color={appColors.black900}
           />
           <TextComponent
@@ -273,13 +276,13 @@ const ProductDetailsScreen = (props: Props) => {
             addProductToCart(item._id, quantity)
               .then(res => {
                 if (res.status === 201) {
-                  Alert.alert('Thông báo', 'Đã thêm sản phẩm vào giỏ hàng.');
+                  Alert.alert('Notification', 'Add product to cart success.');
                   return;
                 }
                 if (res.status === 200) {
                   Alert.alert(
-                    'Thông báo',
-                    'Đã tăng số lượng của sản phẩm trong giỏ hàng.',
+                    'Notification',
+                    'Increased the number of products in the shopping cart.',
                   );
                   return;
                 }

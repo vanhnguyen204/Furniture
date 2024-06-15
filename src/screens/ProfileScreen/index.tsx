@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Container from '../../components/Container.tsx';
 import TextComponent from '../../components/TextComponent.tsx';
 import Header from '../../components/Header.tsx';
@@ -11,18 +11,13 @@ import ButtonComponent from '../../components/ButtonComponent.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_TOKEN} from '../../constants/AsyncStorage.ts';
 import {Alert} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {uploadAvatar} from '../../services/api/auth.ts';
+import {imageUrl} from '../../utils/ip.ts';
 
 const ProfileScreen = () => {
-  const {infor, myAddresses} = useUserInformation();
+  const {infor, setInfor} = useUserInformation();
   const profileTypes = [
-    {
-      id: 1,
-      name: 'History purchase',
-      value: 'View my ordered',
-      onPress: () => {
-        navigatePush('HistoryPurchase');
-      },
-    },
     {
       id: 2,
       name: 'Shipping Addresses',
@@ -64,6 +59,44 @@ const ProfileScreen = () => {
       },
     },
   ];
+  const handleSelectAvatar = async () => {
+    try {
+      const formData = new FormData();
+      launchImageLibrary({
+        mediaType: 'photo',
+        includeBase64: false,
+        includeExtra: true,
+      })
+        .then(res => {
+          // @ts-ignore
+          const img = res?.assets[0];
+          formData.append('file', {
+            type: img.type,
+            uri: img.uri,
+            name: img.fileName,
+          });
+          uploadAvatar(formData)
+            .then(response => {
+              console.log('Upload avatar');
+              console.log(response);
+              if (response.newAvatar) {
+                setInfor({
+                  ...infor,
+                  avatar: response.newAvatar,
+                });
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
       <Header
@@ -94,7 +127,19 @@ const ProfileScreen = () => {
       />
       <Box padding={15}>
         <Box flexDirection={'row'}>
-          <ImageComponent src={{uri: infor.avatar}} height={80} width={80} />
+          <ButtonComponent onPress={handleSelectAvatar} padding={0}>
+            <ImageComponent
+              resizeMode={'cover'}
+              borderRadius={90}
+              src={
+                infor.avatar !== ''
+                  ? {uri: imageUrl + infor.avatar}
+                  : require('../../assets/icons/user-avatar.png')
+              }
+              height={80}
+              width={80}
+            />
+          </ButtonComponent>
           <Box marginLeft={20} justifyContent={'center'}>
             <TextComponent
               value={infor.name}
@@ -118,7 +163,7 @@ const ProfileScreen = () => {
             padding={10}
             borderRadius={7}
             backgroundColor={appColors.white}
-            marginTop={10}
+            marginTop={15}
             flexDirection={'row'}
             justifyContent={'space-between'}
             key={index}

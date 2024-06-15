@@ -91,21 +91,17 @@ const SignUpScreen = () => {
           // @ts-ignore
           if (res.error) {
             Alert.alert(
-              'Thông báo',
-              'Email này đã được đăng ký cho 1 tài khoản khác.',
+              'Notification',
+              'Email is already exists, please use another email and try again.',
             );
             return;
           }
-          Alert.alert(
-            'Chúc mừng',
-            'Tạo tài khoản thành công, quay lại màn hình đăng nhập.',
-            [
-              {
-                text: 'Quay lại',
-                onPress: () => goBackNavigation(),
-              },
-            ],
-          );
+          Alert.alert('Congrats', 'Create account success, back to login.', [
+            {
+              text: 'Go back',
+              onPress: () => goBackNavigation(),
+            },
+          ]);
         })
         .catch(e => {
           console.log(e);

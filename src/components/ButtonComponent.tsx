@@ -14,6 +14,7 @@ interface ButtonProps extends FlexStyle {
   fontSize?: number;
   borderRadius?: number;
   borderColor?: string;
+  disabled?: boolean;
   fontWeight?:
     | 'bold'
     | '600'
@@ -59,6 +60,7 @@ const ButtonComponent = (props: ButtonProps) => {
     position,
     marginLeft,
     marginBottom,
+    disabled,
     top,
     end,
     bottom,
@@ -67,6 +69,7 @@ const ButtonComponent = (props: ButtonProps) => {
   } = props;
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
       style={[
         style,

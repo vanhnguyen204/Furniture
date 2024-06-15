@@ -15,8 +15,12 @@ const Cart = () => {
   useEffect(() => {
     getMyCart()
       .then(res => {
-        // @ts-ignore
-        return setListCart(res);
+        if (res.status === 404) {
+          setListCart([]);
+        } else {
+          // @ts-ignore
+          setListCart(res);
+        }
       })
       .catch(e => {
         console.log('Error get my cart');
@@ -24,13 +28,15 @@ const Cart = () => {
   }, []);
   const calculateTotalPrice = useMemo(() => {
     let sum = 0;
-    listCart.map(item => {
-      // @ts-ignore
-      return (sum += item?.price * item?.quantity);
-    });
+    if (listCart.length > 0) {
+      listCart.map(item => {
+        // @ts-ignore
+        return (sum += item?.price * item?.quantity);
+      });
+    }
     return sum;
   }, [listCart]);
-
+  console.log(listCart);
   const handleIncreaseQuantity = useCallback(
     (index: number) => {
       const filter = listCart.map((item, i) => {
@@ -106,53 +112,55 @@ const Cart = () => {
             />
           </Box>
         ) : (
-          <FlatList
-            data={listCart}
-            renderItem={({item, index}) => (
-              <CartItem
-                item={item}
-                listCart={listCart}
-                index={index}
-                handleIncreaseQuantity={handleIncreaseQuantity}
-                handleReduceQuantity={handleReduceQuantity}
-                remove={removeFromCart}
+          <Box flex={1}>
+            <FlatList
+              data={listCart}
+              renderItem={({item, index}) => (
+                <CartItem
+                  item={item}
+                  listCart={listCart}
+                  index={index}
+                  handleIncreaseQuantity={handleIncreaseQuantity}
+                  handleReduceQuantity={handleReduceQuantity}
+                  remove={removeFromCart}
+                />
+              )}
+            />
+            <Box>
+              <Box
+                marginVertical={10}
+                marginHorizontal={10}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                alignItems={'center'}>
+                <TextComponent
+                  value={'Total:'}
+                  fontSize={20}
+                  fontWeight={'700'}
+                  color={appColors.grays.gray600}
+                />
+                <TextComponent
+                  value={`$ ${calculateTotalPrice}`}
+                  fontSize={20}
+                  fontWeight={'700'}
+                  color={appColors.black900}
+                />
+              </Box>
+              <ButtonComponent
+                backgroundColor={appColors.black900}
+                borderRadius={15}
+                name={'Check out'}
+                onPress={gotoCheckout}
+                alignItems={'center'}
+                justifyContent={'center'}
+                padding={20}
+                fontSize={20}
+                fontWeight={'600'}
+                marginHorizontal={10}
               />
-            )}
-          />
+            </Box>
+          </Box>
         )}
-      </Box>
-      <Box>
-        <Box
-          marginVertical={10}
-          marginHorizontal={10}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          alignItems={'center'}>
-          <TextComponent
-            value={'Total:'}
-            fontSize={20}
-            fontWeight={'700'}
-            color={appColors.grays.gray600}
-          />
-          <TextComponent
-            value={`$ ${calculateTotalPrice}`}
-            fontSize={20}
-            fontWeight={'700'}
-            color={appColors.black900}
-          />
-        </Box>
-        <ButtonComponent
-          backgroundColor={appColors.black900}
-          borderRadius={15}
-          name={'Check out'}
-          onPress={gotoCheckout}
-          alignItems={'center'}
-          justifyContent={'center'}
-          padding={20}
-          fontSize={20}
-          fontWeight={'600'}
-          marginHorizontal={10}
-        />
       </Box>
     </Container>
   );

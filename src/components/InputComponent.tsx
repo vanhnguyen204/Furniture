@@ -54,7 +54,7 @@ const InputComponent = (props: InputProps) => {
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
       onChangeText={onChangeText}
-      autoCapitalize={autoCapitalize}
+      autoCapitalize={'none'}
     />
   );
 };

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00A0FD8118C04F2BA13CD589 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 1C9BF0095EE84B51BA265A6D /* index.js */; };
 		00E356F31AD99517003FC87E /* FurnitureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FurnitureTests.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-Furniture.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Furniture.a */; };
 		0EE6662C86B8417AA0D82B72 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD4E8858CDC14EDF84CE2DB7 /* Ionicons.ttf */; };
@@ -352,7 +351,6 @@
 				BBBC490236334248BBD66FFB /* Octicons.ttf in Resources */,
 				9B0BD6F3C06B495F85477DCC /* SimpleLineIcons.ttf in Resources */,
 				6E8CA81DEA114A0AB42156E0 /* Zocial.ttf in Resources */,
-				00A0FD8118C04F2BA13CD589 /* index.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +359,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -693,10 +692,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -765,10 +761,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

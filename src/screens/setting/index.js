@@ -12,30 +12,12 @@ import {useUserInformation} from '../../hooks/useUserInformation.ts';
 import {getInfor, updateInfor} from '../../services/api/auth.ts';
 
 const Setting = ({navigation}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const {infor, setInfor} = useUserInformation();
+  const [name, setName] = useState(infor.name);
+  const [email, setEmail] = useState(infor.email);
   const [passWord, setPassWord] = useState('123456789');
   const [editableInfor, setEditableInfor] = useState(false);
-  const getUser = () => {
-    getInfor()
-      .then(res => {
-        console.log(res);
-        setEmail(res.email);
-        setName(res.name);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  useEffect(() => {
-    const unsub = navigation.addListener('focus', () => {
-      getUser();
-    });
-    return () => {
-      unsub();
-    };
-  }, [navigation]);
+  const [editablePass, setEditablePass] = useState(false);
   return (
     <Container>
       <Header
@@ -64,12 +46,15 @@ const Setting = ({navigation}) => {
           onPress={() => {
             setEditableInfor(prevState => !prevState);
             if (editableInfor) {
-              updateInfor(name)
-                .then(res => {
-                  console.log(res);
+              updateInfor(name, passWord)
+                .then(() => {
+                  setInfor({
+                    ...infor,
+                    name: name,
+                  });
                 })
                 .catch(e => {
-                  console.log(e);
+                  console.log(e.toString());
                 });
             }
           }}>
@@ -112,15 +97,30 @@ const Setting = ({navigation}) => {
           fontSize={18}
           fontWeight={'500'}
         />
-        <ButtonComponent name={'Pen update pass'} onPress={() => {}}>
+        <ButtonComponent
+          name={'Pen update pass'}
+          onPress={() => {
+            setEditablePass(prevState => !prevState);
+          }}>
           <ImageComponent
-            src={require('../../assets/icons/pen_icon.png')}
+            src={
+              editablePass
+                ? require('../../assets/icons/tick.png')
+                : require('../../assets/icons/pen_icon.png')
+            }
+            tintColor={editablePass ? '#46E661' : '#000000'}
             height={20}
             width={20}
           />
         </ButtonComponent>
       </Box>
-      <CardInfor value={'12919291911'} label={'Pass'} isPassWord={true} />
+      <CardInfor
+        value={passWord}
+        editable={editablePass}
+        onValueChange={value => setPassWord(value)}
+        label={'Pass'}
+        isPassWord={true}
+      />
     </Container>
   );
 };

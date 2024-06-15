@@ -69,12 +69,22 @@ const MyProducts = (props: Props) => {
             />
           </ButtonComponent>
         </Box>
-        <FlatList
-          style={{flex: 1}}
-          numColumns={2}
-          data={myProducts}
-          renderItem={({item}) => <MyProductItem item={item} />}
-        />
+        {myProducts.length === 0 ? (
+          <Box flex={1} alignItems={'center'} justifyContent={'center'}>
+            <TextComponent
+              alignSelf={'center'}
+              color={appColors.black900}
+              value={'You have not any products.'}
+            />
+          </Box>
+        ) : (
+          <FlatList
+            style={{flex: 1}}
+            numColumns={2}
+            data={myProducts}
+            renderItem={({item}) => <MyProductItem item={item} />}
+          />
+        )}
       </Box>
       <ButtonComponent
         position={'absolute'}

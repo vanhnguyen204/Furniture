@@ -5,10 +5,13 @@ import ImageComponent from '../../../components/ImageComponent.tsx';
 import TextComponent from '../../../components/TextComponent.tsx';
 import ButtonComponent from '../../../components/ButtonComponent.tsx';
 import {appColors} from '../../../assets/colors/appColors.ts';
-import CategoryItem from "./CategoryItem.tsx";
+import CategoryItem from './CategoryItem.tsx';
 
-
-export const Categories = () => {
+interface CategoryProps {
+  onItemSelected: (type: string) => void;
+}
+export const Categories = (props: CategoryProps) => {
+  const {onItemSelected} = props;
   const [isSelected, setIsSelected] = useState(0);
   const categoriesData = [
     {
@@ -59,7 +62,10 @@ export const Categories = () => {
             item={item}
             index={index}
             isSelected={isSelected}
-            setIsSelected={setIsSelected}
+            setIsSelected={() => {
+              setIsSelected(index);
+              onItemSelected(item.type);
+            }}
           />
         )}
       />
@@ -67,4 +73,4 @@ export const Categories = () => {
   );
 };
 
-export default Categories
+export default Categories;

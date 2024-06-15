@@ -16,22 +16,16 @@ const ListFavorites = (props: ListProps) => {
   const handleDeleteFavorite = useCallback(
     async (productId: string) => {
       try {
-        const getUserId = await AsyncStorage.getItem(ACCESS_USER_ID);
-        if (getUserId !== null) {
-          await deleteFavorite(productId, getUserId);
-          const filterFav = data.filter(item => {
-            // @ts-ignore
-            return item?._id !== productId;
-          });
-          setMyFavorites(filterFav);
-          Alert.alert('Thông báo', 'Xoá thành công.');
-        }
+        await deleteFavorite(productId);
+        const filterFav = data.filter(item => {
+          // @ts-ignore
+          return item?._id !== productId;
+        });
+        setMyFavorites(filterFav);
+        Alert.alert('Notification', 'Remove success.');
       } catch (e) {
         console.log(e);
-        Alert.alert(
-          'Thông báo',
-          'Không thể xoá lúc này, vui lòng thử lại sau.',
-        );
+        Alert.alert('Notification', 'Cannot remove now. Please try again.');
       }
     },
     [data, setMyFavorites],

@@ -22,19 +22,29 @@ const ItemShippingAddress = (props: ItemShoppingAddressProps) => {
   const handleUpdateStatus = async (value: boolean) => {
     try {
       await activeShippingAddress(item._id);
-      const filter: Address[] = myAddresses.map((address, i): Address => {
-        if (i === index) {
-          address.isSelected = value;
-        } else {
-          address.isSelected = false;
-        }
-        return address;
-      });
-      setMyAddress(filter);
-    } catch (e) {
-      console.log(e);
+      const updatedAddresses = updateAddresses(myAddresses, index, value);
+      setMyAddress(updatedAddresses);
+    } catch (error) {
+      console.error('Failed to update address status:', error);
     }
   };
+
+  const updateAddresses = (
+    addresses: Address[],
+    targetIndex: number,
+    value: boolean,
+  ) => {
+    return addresses.map((address, i) => {
+      if (i === targetIndex) {
+        return {...address, isSelected: value};
+      }
+      if (address.isSelected) {
+        return {...address, isSelected: false};
+      }
+      return address;
+    });
+  };
+  console.log(myAddresses);
   return (
     <Box marginHorizontal={20}>
       <Box flexDirection={'row'}>

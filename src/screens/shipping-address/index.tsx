@@ -17,6 +17,7 @@ import {
   getMyShippingAddress,
   removeMyShippingAddress,
 } from '../../services/api/shippingAddress.ts';
+import TextComponent from '../../components/TextComponent.tsx';
 
 const ShippingAddress = () => {
   const feats: string[] = [
@@ -57,11 +58,14 @@ const ShippingAddress = () => {
     },
     [toggleModal],
   );
-  useEffect(() => {
+  const getAddress = () => {
     getMyShippingAddress().then(res => {
       // @ts-ignore
       setMyAddress(res);
     });
+  };
+  useEffect(() => {
+    getAddress();
   }, [setMyAddress]);
   return (
     <Container justifyContent={'space-between'} alignItems={'flex-end'}>
@@ -77,7 +81,7 @@ const ShippingAddress = () => {
               const response = await createShippingAddress(address);
               // @ts-ignore
               setMyAddress(myAddresses, response.newAddress);
-              console.log(myAddresses);
+              getAddress();
             } else {
               const filter = myAddresses.map((item: Address) => {
                 if (item._id === initialValues?._id) {
@@ -119,44 +123,54 @@ const ShippingAddress = () => {
           }}
         />
         <Spacer height={20} />
-        <FlatList
-          data={myAddresses}
-          renderItem={({item, index}) => {
-            return (
-              <ItemShoppingAddress
-                onRemove={(id: string) => {
-                  Alert.alert(
-                    'Notification',
-                    'Are you sure want to remove shipping address?',
-                    [
-                      {
-                        text: 'Cancel',
-                      },
-                      {
-                        text: 'Remove',
-                        onPress: () => {
-                          removeMyShippingAddress(id)
-                            .then(() => {
-                              const filter = myAddresses.filter(it => {
-                                return it._id !== id;
-                              });
-                              setMyAddress(filter);
-                            })
-                            .catch(e => {
-                              console.log(e);
-                            });
+        {myAddresses.length === 0 ? (
+          <Box flex={1} alignItems={'center'} justifyContent={'center'}>
+            <TextComponent
+              alignSelf={'center'}
+              color={appColors.black900}
+              value={'You have not any shipping address.'}
+            />
+          </Box>
+        ) : (
+          <FlatList
+            data={myAddresses}
+            renderItem={({item, index}) => {
+              return (
+                <ItemShoppingAddress
+                  onRemove={(id: string) => {
+                    Alert.alert(
+                      'Notification',
+                      'Are you sure want to remove shipping address?',
+                      [
+                        {
+                          text: 'Cancel',
                         },
-                      },
-                    ],
-                  );
-                }}
-                onUpdate={handleUpdateShippingAddress}
-                item={item}
-                index={index}
-              />
-            );
-          }}
-        />
+                        {
+                          text: 'Remove',
+                          onPress: () => {
+                            removeMyShippingAddress(id)
+                              .then(() => {
+                                const filter = myAddresses.filter(it => {
+                                  return it._id !== id;
+                                });
+                                setMyAddress(filter);
+                              })
+                              .catch(e => {
+                                console.log(e);
+                              });
+                          },
+                        },
+                      ],
+                    );
+                  }}
+                  onUpdate={handleUpdateShippingAddress}
+                  item={item}
+                  index={index}
+                />
+              );
+            }}
+          />
+        )}
       </Box>
 
       <Box

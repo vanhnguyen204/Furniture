@@ -158,11 +158,16 @@ const ItemForm = (props: ItemType) => {
     <Box>
       <TextComponent
         value={upperCase(label)}
-        color={appColors.black900}
+        color={appColors.white}
         marginBottom={5}
       />
       <InputComponent
-        style={{borderWidth: 1, padding: 10, borderRadius: 10}}
+        style={{
+          borderWidth: 1,
+          padding: 10,
+          borderRadius: 10,
+          borderColor: appColors.white,
+        }}
         value={value}
         onChangeText={(text: string) => onInputChange(label, index, text)}
         placeholder={upperCase(label)}

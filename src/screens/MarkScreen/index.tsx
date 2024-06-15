@@ -15,13 +15,7 @@ import TextComponent from '../../components/TextComponent.tsx';
 
 const MarkScreen = () => {
   const {myFavorites, setMyFavorites} = useUserInformation();
-  const [isSearch, setIsSearch] = useState<boolean>(false);
   const searchRef = useRef<TextInput>(null);
-  useEffect(() => {
-    if (isSearch) {
-      searchRef?.current?.focus();
-    }
-  }, [isSearch]);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(async () => {
     try {
@@ -43,34 +37,16 @@ const MarkScreen = () => {
   }, [setMyFavorites]);
   return (
     <Container>
-      {isSearch ? (
-        <Box flexDirection={'row'} alignItems={'center'}>
-          <TextInput
-            style={{flex: 1, marginHorizontal: 10}}
-            ref={searchRef}
-            placeholder={'Search...'}
-            placeholderTextColor={appColors.grays.gray500}
-          />
-          <ButtonComponent
-            nameColor={appColors.blue500}
-            name={'Huỷ'}
-            onPress={() => setIsSearch(prevState => !prevState)}
-          />
-        </Box>
-      ) : (
-        <Header
-          onLeftPress={() => {
-            setIsSearch(prevState => !prevState);
-          }}
-          title={'Favorite'}
-          fontSizeTitle={16}
-          fontWeight={'600'}
-          colorTitle={appColors.black900}
-          iconRight={require('../../assets/icons/cart.png')}
-          sizeIconRight={25}
-          onRightPress={() => navigatePush('Cart')}
-        />
-      )}
+      <Header
+        onLeftPress={() => {}}
+        title={'Favorite'}
+        fontSizeTitle={16}
+        fontWeight={'600'}
+        colorTitle={appColors.black900}
+        iconRight={require('../../assets/icons/cart.png')}
+        sizeIconRight={25}
+        onRightPress={() => navigatePush('Cart')}
+      />
       {myFavorites.length === 0 ? (
         <Box flex={1}>
           <TextComponent

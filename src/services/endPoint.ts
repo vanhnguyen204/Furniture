@@ -1,4 +1,5 @@
 import {ProdConfig} from '../config/axiosConfig.ts';
+import { changPassForgot } from "./api/auth.ts";
 
 export default () => {
   const baseURL = ProdConfig.BASE_URL;
@@ -9,23 +10,29 @@ export default () => {
     login: `${baseURL}/api/auth/login`,
     getInfor: `${baseURL}/api/auth/infor`,
     updateInfor: `${baseURL}/api/auth/user`,
+    uploadAvatar: `${baseURL}/api/auth/user/avatar`,
+    //forgot password
+    verifyEmail: `${baseURL}/api/auth/verify-email`,
+    verifyCodeResetPass: `${baseURL}/api/auth/verify-code`,
+    changPassForgot: `${baseURL}/api/auth/reset-pass`,
     //product
     listProductGlobal: `${baseURL}/api/product/`,
     getMyProducts: `${baseURL}/api/product/my-product`,
-    productDetails: `${baseURL}/api/product/details`,
-    deleteProduct: `${baseURL}/api/product/delete`,
-    createProduct: `${baseURL}/api/product/create`,
-    updateProduct: `${baseURL}/api/product/update`,
+    productDetails: `${baseURL}/api/product/details/`,
+    deleteProduct: `${baseURL}/api/product/`,
+    createProduct: `${baseURL}/api/product/`,
+    updateProduct: `${baseURL}/api/product/`,
     listProductOfUser: `${baseURL}/api/product/product-user`,
-    createFavorite: `${baseURL}/api/favorite/create`,
-    deleteFavorite: `${baseURL}/api/favorite/delete`,
-    isFavorite: `${baseURL}/api/favorite/isFavorite`,
-    favoriteProductsByUserId: `${baseURL}/api/favorite/favorites-user`,
+    createFavorite: `${baseURL}/api/favorite/`,
+    deleteFavorite: `${baseURL}/api/favorite/`,
+    isFavorite: `${baseURL}/api/favorite/isFavorite/`,
+    favoriteOfUser: `${baseURL}/api/favorite/favorites-user`,
+    getProductsByCategory: `${baseURL}/api/product/categories/`,
     //cart
     checkProductIsInCart: `${baseURL}/api/cart/checking-product`,
     fetchDataFromCart: `${baseURL}/api/cart/my-cart`,
     addProductToCart: `${baseURL}/api/cart/add`,
-    removeFromCart: `${baseURL}/api/cart/remove`,
+    removeFromCart: `${baseURL}/api/cart/`,
     //shipping address
     createShippingAddress: `${baseURL}/api/shipping-address/`,
     updateShippingAddress: `${baseURL}/api/shipping-address/`,
@@ -41,7 +48,7 @@ export default () => {
     activePayment: `${baseURL}/api/payment/active/`,
     getMySelectedPayment: `${baseURL}/api/payment/my-selected-payment`,
     //search
-    searchProduct: `${baseURL}/api/product/search`,
+    searchProduct: `${baseURL}/api/product/search/`,
 
     //invoice
     createInvoice: `${baseURL}/api/invoice/`,
@@ -54,5 +61,6 @@ export default () => {
     deleteReview: `${baseURL}/api/review/`,
     reviewed: `${baseURL}/api/review/`,
     countReviews: `${baseURL}/api/review/count/`,
+    detailReviewProduct: `${baseURL}/api/review/details/`,
   };
 };

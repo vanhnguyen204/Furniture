@@ -26,9 +26,13 @@ const CardInfor = (props: CardInforProps) => {
       />
 
       {isPassWord ? (
-        <TextInput value={value} secureTextEntry={true} />
+        <TextInput value={value} editable={editable} secureTextEntry={true} onChangeText={onValueChange} />
       ) : (
-        <TextInput value={value} editable={editable} onChangeText={onValueChange} />
+        <TextInput
+          value={value}
+          editable={editable}
+          onChangeText={onValueChange}
+        />
       )}
     </Box>
   );

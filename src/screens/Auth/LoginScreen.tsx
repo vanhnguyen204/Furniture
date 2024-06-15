@@ -11,7 +11,7 @@ import {navigatePush, navigateReplace} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
 import {useAuth} from '../../hooks/useAuth.ts';
 import {validateEmail, validatePass} from '../../utils/validate.ts';
-import {login} from '../../services/api/auth.ts';
+import {getUserInfor, login} from '../../services/api/auth.ts';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ACCESS_TOKEN, ACCESS_USER_ID} from '../../constants/AsyncStorage.ts';
@@ -53,7 +53,7 @@ export const LoginScreen = () => {
           // @ts-ignore
           if (res?.error) {
             // @ts-ignore
-            Alert.alert('Thông báo', res.error);
+            Alert.alert('Notification', res.error);
             return;
           }
           try {
@@ -65,7 +65,8 @@ export const LoginScreen = () => {
             const fetchDataRes = await fetchAllData();
             // @ts-ignore
             setProducts(fetchDataRes);
-
+            const getInforUser = await getUserInfor();
+            setInfor(getInforUser);
             navigateReplace('BottomTab');
             setErrorEmail('');
             setErrorPassword('');
@@ -75,10 +76,11 @@ export const LoginScreen = () => {
             console.log(e);
           }
         })
-        .catch(() => {
+        .catch(e => {
+          console.log(e);
           Alert.alert(
-            'Mất kết nối',
-            'Vui lòng kiểm tra đường truyền và thử lại.',
+            'Notification',
+            'Please check your internet and try again.',
           );
         });
     } else {
@@ -91,7 +93,7 @@ export const LoginScreen = () => {
     setEmail,
     setErrorEmail,
     setErrorPassword,
-    setMyFavorites,
+    setInfor,
     setPassword,
     setProducts,
   ]);
@@ -99,11 +101,13 @@ export const LoginScreen = () => {
     const sub = navigation.addListener('focus', () => {
       setErrorEmail('');
       setErrorPassword('');
+      setEmail('');
+      setPassword('');
     });
     return () => {
       sub();
     };
-  }, [navigation, setErrorEmail, setErrorPassword]);
+  }, [navigation, setEmail, setErrorEmail, setErrorPassword, setPassword]);
   return (
     <Container>
       <Box padding={20} flex={1}>
@@ -232,7 +236,7 @@ export const LoginScreen = () => {
           )}
           <ButtonComponent
             name={'Forgot password ?'}
-            onPress={() => {}}
+            onPress={() => navigatePush('ForgotPassword')}
             nameColor={appColors.black900}
             alignSelf={'flex-end'}
           />

@@ -1,13 +1,19 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Container from '../../components/Container.tsx';
 import Header from './components/Header.tsx';
 import Categories from './components/Categories.tsx';
 import ListProduct from './components/ListProduct.tsx';
 import {useStoreGlobal} from '../../hooks/useStoreGlobal.ts';
-import {fetchAllData} from '../../services/api/product.ts';
+import {
+  fetchAllData,
+  getProductsByCategory,
+} from '../../services/api/product.ts';
 import {navigatePush} from '../../utils/navigationUtils.ts';
 import {PageName} from '../../config/pageName.ts';
 import ModalSearch from '../../components/ModalSearch.tsx';
+import Box from '../../components/Box.tsx';
+import TextComponent from '../../components/TextComponent.tsx';
+import {appColors} from '../../assets/colors/appColors.ts';
 
 const HomeScreen = () => {
   const {products, setProducts} = useStoreGlobal();
@@ -21,7 +27,6 @@ const HomeScreen = () => {
       .then(res => {
         // @ts-ignore
         setProducts(res);
-        console.log('onRefresh');
       })
       .catch(e => {
         console.log(e);
@@ -29,9 +34,27 @@ const HomeScreen = () => {
       .finally(() => {
         setRefreshing(false);
       });
-    console.log('onRefresh');
   }, [setProducts]);
-
+  const onCategorySelected = (type: string) => {
+    getProductsByCategory(type)
+      .then(res => {
+        // @ts-ignore
+        setProducts(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    fetchAllData()
+      .then(res => {
+        // @ts-ignore
+        setProducts(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [setProducts]);
   return (
     <Container>
       <ModalSearch onClose={toggleModalSearch} visible={visibleModalSearch} />
@@ -41,13 +64,27 @@ const HomeScreen = () => {
           navigatePush('Cart');
         }}
       />
-      <Categories />
-      <ListProduct
-        onRefresh={onRefresh}
-        refresh={refreshing}
-        column={2}
-        data={products}
+      <Categories
+        onItemSelected={(type: string) => {
+          onCategorySelected(type);
+        }}
       />
+      {products.length === 0 ? (
+        <Box flex={1} justifyContent={'center'}>
+          <TextComponent
+            alignSelf={'center'}
+            value={'This category has no products.'}
+            color={appColors.black900}
+          />
+        </Box>
+      ) : (
+        <ListProduct
+          onRefresh={onRefresh}
+          refresh={refreshing}
+          column={2}
+          data={products}
+        />
+      )}
     </Container>
   );
 };

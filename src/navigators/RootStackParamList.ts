@@ -16,10 +16,18 @@ export type RootStackParamList = {
   MyProducts: undefined;
   ManageMyProducts: {isCreate: boolean; item?: Product};
   DonePurchase: undefined;
-  HistoryPurchase: undefined;
   InvoiceDetails: {invoice: Invoice};
   MyReviews: undefined;
   Statistical: undefined;
   Setting: undefined;
-  RatingDetails: {productId: string};
+  RatingDetails: {
+    productId: string;
+    image: string;
+    price: number;
+    average: number;
+    reviews: number;
+    name: string;
+  };
+  ForgotPassword: undefined;
+  ChangePassword: {email: string};
 };
